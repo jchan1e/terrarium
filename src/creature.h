@@ -8,18 +8,18 @@
 class Creature
 {
 public:
-    float x, y, dx, dy, theta, speed;
-    float hue, mhue;
-    float health;
-    //float atk;
-    //float leye, reye;
-    Genome g;
-    Net net;
+   float x, y, dx, dy, theta, speed;
+   float hue, mhue;
+   float health;
+   //float atk;
+   //float leye, reye;
+   Genome g;
+   Net net;
 
-    Creature(float X, float Y, float Th, Genome G);
-    ~Creature();
-    void render();
-    void animate();
+   Creature(float X, float Y, float Th, Genome G);
+   ~Creature();
+   void render();
+   void animate();
 };
 
 #endif

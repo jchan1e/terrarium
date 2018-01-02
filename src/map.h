@@ -5,23 +5,23 @@
 
 struct Tile
 {
-   float hue;
-   float maximum;
-   float regrowth;
+  float hue;
+  float maximum;
+  float regrowth;
 };
 
 class Map
 {
 public:
-    int width, height;
-    float** grid;
+   int width, height;
+   float** grid;
 
-    void render();
-    void animate();
-    Map(int Width, int Height);
-    ~Map();
-    void generate();
-    void generate(int seed);
+   void render();
+   void animate();
+   Map(int Width, int Height);
+   ~Map();
+   void generate();
+   void generate(int seed);
 };
 
 #endif

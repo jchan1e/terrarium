@@ -4,9 +4,9 @@
 #define GENOME_H
 
 struct Genome {
-   float hue;
-   float mhue;
-   Net net;
+  float hue;
+  float mhue;
+  Net net;
 };
 
 #endif
