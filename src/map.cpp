@@ -12,7 +12,7 @@ Map::Map(int Width, int Height) {
 Map::~Map() {
    for(int i=0; i < width; ++i)
       delete grid[i];
-   delete grid;
+   delete[] grid;
 }
 
 void Map::generate(int seed) {
@@ -165,7 +165,7 @@ void Map::generate() {
 
    for(int i=0; i < width; ++i)
       delete delta[i];
-   delete delta;
+   delete[] delta;
 }
 
 //void Map::renderTile(float x, float y, float z) {
