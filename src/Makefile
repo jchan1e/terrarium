@@ -35,8 +35,8 @@ map.o:map.cpp map.h
 creature.o:creature.cpp creature.h genome.h net.h map.h
 	g++ -c $(CFLG) $<
 
-genome.o:genome.cpp genome.h net.h
-	g++ -c $(CFLG) $<
+#genome.o:genome.cpp genome.h net.h
+#	g++ -c $(CFLG) $<
 
 net.o:net.cpp net.h
 	g++ -c $(CFLG) $<
@@ -49,7 +49,7 @@ text.o:text.cpp text.h
 run:game.o map.o creature.o tower.o objects.o text.o
 	g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
-test:test.o map.o creature.o genome.o net.o
+test:test.o map.o creature.o net.o
 	g++ -g -O3 -o test $^
 	./test
 
