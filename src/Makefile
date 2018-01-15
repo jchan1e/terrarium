@@ -16,7 +16,8 @@ GLIBS=-lGLU -lGL -lm $(shell sdl2-config --libs)
 CLEAN=rm -rf run test *.o *.a
 endif
 #endif
-CFLG=-g -O3 -Wall -std=c++11
+#CFLG=-g -O3 -Wall -std=c++11
+CFLG=-g -Wall -std=c++11
 
 compile:run test.o
 
@@ -50,7 +51,8 @@ run:game.o map.o creature.o tower.o objects.o text.o
 	g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
 test:test.o map.o creature.o net.o
-	g++ -g -O3 -o test $^
+	g++ -g -o test $^
+	#g++ -g -O3 -o test $^
 	./test
 
 

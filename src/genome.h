@@ -6,7 +6,9 @@
 struct Genome {
   float hue;
   float mhue;
-  Net net;
+  int ni, n1, no;
+  float** mi1;
+  float** m1o;
 };
 
 #endif
