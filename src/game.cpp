@@ -11,10 +11,6 @@
 //#include <iomanip>
 //#include <sstream>
 
-//#define HOST "localhost"
-//#define USER "root"
-//#define PASS ""
-//#define DB "scores"
 //#include "CSCIx229.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
@@ -23,7 +19,7 @@
 //#include "enemy.h"
 //#include "tower.h"
 //#include "objects.h"
-//#include "text.h"
+#include "text.h"
 
 using namespace std;
 
@@ -31,17 +27,9 @@ using namespace std;
 //running or not
 bool quit = false;
 
-//View Angles
-//double th = 0;
-//double ph = 72;
-//double dth = 0;
-//double dph = 0;
 //Window Size
 int w = 1920;
 int h = 1080;
-
-//play mode
-//int mode = 1;  // 1 = play, 0 = place
 
 //tower placement cursor position
 int cursorx = 0;
@@ -50,21 +38,8 @@ int cursory = 0;
 //eye position and orientation
 double ex = 0;
 double ey = 0;
-//double ez = 0;
-
-//double vx = 0;
-//double vy = 0;
-//double vz = 0;
 double zoom = 24;
-//double dzoom = 0;
-
-//lighting arrays
-//float Ambient[4];
-//float Diffuse[4];
-//float Specular[4];
-//float shininess[1];
-//float LightPos[4];
-//float ltheta = 0.0;
+double dzoom = 0;
 
 //Textures
 //unsigned int texture[5];
@@ -88,6 +63,7 @@ int Pause = 0;
 int frames = 0;
 
 //Game Objects
+//list of creatures
 
 ////////////////////
 //functions that are called ahead of when they're defined
@@ -310,21 +286,6 @@ int main(int argc, char *argv[])
    cout << "Shutting Down\n";
    cout << "average framerate: " << 1000*(float)frames/(r - startuptime) << endl;
 
-   for (int i=0; i<nEnemies; ++i)
-   {
-      if (enemies[i] != NULL)
-        delete enemies[i];
-   }
-   for (int i=0; i<nTowers; ++i)
-   {
-      if (towers[i] != NULL)
-        delete towers[i];
-   }
-   for (int i=0; i<nBullets; ++i)
-   {
-      if (bullets[i] != NULL)
-        delete bullets[i];
-   }
 
    SDL_Quit();
 

@@ -8,7 +8,7 @@
 ifeq ("$(shell uname)","Darwin")
 SFLG=-Wno-deprecated-declarations $(shell sdl2-config --cflags)
 GLIBS=-framework OpenGL $(shell sdl2-config --libs)
-CLEAN=rm -rf run test *.o *.a *.dSYM
+CLEAN=rm -rf run Test *.o *.a *.dSYM
 #  Linux/Unix/Solaris
 else
 SFLG=$(shell sdl2-config --cflags) -DGL_GLEXT_PROTOTYPES
@@ -16,10 +16,10 @@ GLIBS=-lGLU -lGL -lm $(shell sdl2-config --libs)
 CLEAN=rm -rf run Test *.o *.a
 endif
 #endif
-#CFLG=-g -O3 -Wall -std=c++11
-CFLG=-g -Wall -std=c++11
+CFLG=-g -O3 -Wall -std=c++11
+#CFLG=-g -Wall -std=c++11
 
-compile:run test.o
+compile:run Test
 
 all:run test
 
@@ -47,7 +47,7 @@ text.o:text.cpp text.h
 
 
 #  link
-run:game.o map.o creature.o tower.o objects.o text.o
+run:game.o map.o creature.o net.o
 	g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
 Test:test.o map.o creature.o net.o
