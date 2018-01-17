@@ -32,5 +32,5 @@
 *.app
 
 # this project in particular
-test
+Test
 .vimrc
