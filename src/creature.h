@@ -1,6 +1,7 @@
 #include "map.h"
 #include "net.h"
 #include "genome.h"
+#include "objects.h"
 
 #ifndef CREATURE_H
 #define CREATURE_H

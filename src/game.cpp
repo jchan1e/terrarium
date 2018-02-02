@@ -14,10 +14,8 @@
 //#include "CSCIx229.h"
 #include <SDL.h>
 #include <SDL_opengl.h>
-//#include "structures.h"
-//#include "map.h"
-//#include "enemy.h"
-//#include "tower.h"
+#include "map.h"
+#include "creature.h"
 //#include "objects.h"
 #include "text.h"
 
@@ -63,7 +61,7 @@ int Pause = 0;
 int frames = 0;
 
 //Game Objects
-//list of creatures
+Creature* creatures;
 
 ////////////////////
 //functions that are called ahead of when they're defined

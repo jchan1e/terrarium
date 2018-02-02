@@ -27,13 +27,16 @@ all:run test
 test.o:test.cpp map.h net.h genome.h creature.h
 	g++ -c $(CFLG) $<
 
-game.o:game.cpp map.h net.h genome.h creature.h
+game.o:game.cpp map.h net.h genome.h creature.h stdGL.h
 	g++ -c $(CFLG) $(SFLG) $<
 
 map.o:map.cpp map.h
 	g++ -c $(CFLG) $<
 
-creature.o:creature.cpp creature.h genome.h net.h map.h
+creature.o:creature.cpp creature.h genome.h net.h map.h stdGL.h
+	g++ -c $(CFLG) $<
+
+objects.o:objects.cpp stdGL.h
 	g++ -c $(CFLG) $<
 
 #genome.o:genome.cpp genome.h net.h
@@ -42,17 +45,17 @@ creature.o:creature.cpp creature.h genome.h net.h map.h
 net.o:net.cpp net.h
 	g++ -c $(CFLG) $<
 
-text.o:text.cpp text.h
+text.o:text.cpp text.h stdGL.h
 	g++ -c $(CFLG) $<
 
 
 #  link
-run:game.o map.o creature.o net.o
+run:game.o map.o creature.o net.o objects.o
 	g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
-Test:test.o map.o creature.o net.o
-	g++ -g -o Test $^
-	#g++ -g -O3 -o test $^
+Test:test.o map.o creature.o net.o objects.o
+	g++ -g -O3 -o Test $^ $(GLIBS)
+
 test: Test
 	./Test
 
