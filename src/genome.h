@@ -1,5 +1,3 @@
-#include "net.h"
-
 #ifndef GENOME_H
 #define GENOME_H
 

@@ -6,6 +6,7 @@
 struct Tile
 {
   float hue;
+  float food;
   float maximum;
   float regrowth;
 };
