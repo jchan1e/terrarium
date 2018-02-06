@@ -37,5 +37,6 @@ void Creature::render() {
 }
 
 void Creature::animate() {
-  // simulation actions go here
+  // evaluate the NN
+  // outputs from the NN determine the creature's actions
 }
