@@ -1,5 +1,5 @@
 #include "stdGL.h"
-
+#include <vector>
 #include <iostream>
 // For database connection:
 //#include <mysql_connection.h>
@@ -36,8 +36,11 @@ int cursory = 0;
 //eye position and orientation
 double ex = 0;
 double ey = 0;
+double ez = 0;
 double zoom = 24;
 double dzoom = 0;
+double th = 0;
+double ph = 0;
 
 //Textures
 //unsigned int texture[5];
@@ -61,7 +64,9 @@ int Pause = 0;
 int frames = 0;
 
 //Game Objects
-Creature* creatures;
+//Creature* creatures;
+vector<Creature*> creatures;
+Map* M;
 
 ////////////////////
 //functions that are called ahead of when they're defined
@@ -117,7 +122,7 @@ bool init()
 void display()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  //glEnable(GL_DEPTH_TEST);
+  glEnable(GL_DEPTH_TEST);
   //glEnable(GL_CULL_FACE);
 
   //reshape(w,h);
@@ -125,11 +130,11 @@ void display()
   glLoadIdentity();
 
   //view angle
-  //ex = Sin(-th)*Cos(ph)*zoom;
-  //ey = Sin(ph)*zoom;
-  //ez = Cos(-th)*Cos(ph)*zoom;
+  ex = Sin(-th)*Cos(ph)*zoom;
+  ey = Sin(ph)*zoom;
+  ez = Cos(-th)*Cos(ph)*zoom;
 
-  //gluLookAt(ex,ey,ez , 0,0,0 , 0,Cos(ph),0);
+  gluLookAt(ex,ey,ez , 0,0,0 , 0,Cos(ph),0);
 
   // Object Rendering
 
@@ -257,11 +262,18 @@ int main(int argc, char *argv[])
     return 1;
   }
 
+  M = new Map(10,10, 1729);
+
+  float** m1 = new float*[10];
+  for(int i=0; i < 10; ++i)
+    m1[i] = new float[10];
+  Genome g = {0.0, 0.0, 10,10,10, m1, m1};
+  creatures.push_back(new Creature(0.0, 0.0, 0.0, g));
+
   reshape(w,h);
 
 
   int startuptime = SDL_GetTicks();
-
 
   ////////Main Loop////////
   while (!quit)

@@ -1,32 +1,37 @@
 #include "map.h"
 
+Map::Map(int Width, int Height, int seed) {
+  srand(seed);
+  Map(Width, Height);
+}
+
 Map::Map(int Width, int Height) {
   width = Width;
   height = Height;
-  grid = new float*[width];
+  heightmap = new float*[width];
   for(int i=0; i < width; ++i)
-    grid[i] = new float[height];
+    heightmap[i] = new float[height];
   generate();
 }
 
 Map::~Map() {
-  for(int i=0; i < width; ++i)
+  for(int i=0; i < width; ++i) {
+    delete heightmap[i];
     delete grid[i];
+  }
+  delete[] heightmap;
   delete[] grid;
 }
 
-void Map::generate(int seed) {
-  srand(seed);
-  generate();
-}
-
 void Map::generate() {
+  // generates Perlin Noise to fill grid
+
   // Initialize and set all values to 0.0
   float ** delta = new float*[width];
   for(int i=0; i < width; ++i) {
     delta[i] = new float[height];
     for(int j=0; j < height; ++j) {
-      grid[i][j] = 0.0;
+      heightmap[i][j]= 0.0;
       delta[i][j] = 0.0;
     }
   }
@@ -60,7 +65,7 @@ void Map::generate() {
   }
   for(int i=0; i < width; ++i) {
     for(int j=0; j < height; ++j) {
-      grid[i][j] += delta[i][j];
+      heightmap[i][j] += delta[i][j];
     }
   }
 
@@ -93,7 +98,7 @@ void Map::generate() {
   }
   for(int i=0; i < width; ++i) {
     for(int j=0; j < height; ++j) {
-      grid[i][j] += delta[i][j];
+      heightmap[i][j] += delta[i][j];
     }
   }
 
@@ -126,7 +131,7 @@ void Map::generate() {
   }
   for(int i=0; i < width; ++i) {
     for(int j=0; j < height; ++j) {
-      grid[i][j] += delta[i][j];
+      heightmap[i][j] += delta[i][j];
     }
   }
 
@@ -159,11 +164,33 @@ void Map::generate() {
   }
   for(int i=0; i < width; ++i) {
     for(int j=0; j < height; ++j) {
-      grid[i][j] += delta[i][j];
+      heightmap[i][j] += delta[i][j];
+    }
+  }
+
+  // Initialize grid
+  grid = new Tile*[width];
+  for(int i=0; i < width; ++i) {
+    grid[i] = new Tile[height];
+    for(int j=0; j < height; ++j) {
+      if (heightmap[i][j] > 0.0) {
+        grid[i][j] = Tile();
+      }
+      else {
+        grid[i][j] = Tile();
+      }
     }
   }
 
   for(int i=0; i < width; ++i)
     delete delta[i];
   delete[] delta;
+}
+
+void Map::animate() {
+  for (int i=0; i < width; ++i) {
+    for (int j=0; j < height; ++j) {
+      grid[i][j].grow();
+    }
+  }
 }

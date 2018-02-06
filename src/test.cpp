@@ -26,10 +26,10 @@ int main() {
       //cout << "| ";
       for (int j=0; j < M.width; ++j) {
         //cout << M.grid[i][j] << " | ";
-        if (M.grid[i][j] > maxi)
-          maxi = M.grid[i][j];
-        if (M.grid[i][j] < mini)
-          mini = M.grid[i][j];
+        if (M.heightmap[i][j] > maxi)
+          maxi = M.heightmap[i][j];
+        if (M.heightmap[i][j] < mini)
+          mini = M.heightmap[i][j];
       }
       //cout << endl;
     }

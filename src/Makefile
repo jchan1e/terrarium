@@ -19,7 +19,7 @@ endif
 CFLG=-g -O3 -Wall -std=c++11
 #CFLG=-g -Wall -std=c++11
 
-compile:run Test
+compile:run
 
 all:run test
 
@@ -30,7 +30,7 @@ test.o:test.cpp map.h net.h genome.h creature.h
 game.o:game.cpp map.h net.h genome.h creature.h stdGL.h
 	g++ -c $(CFLG) $(SFLG) $<
 
-map.o:map.cpp map.h
+map.o:map.cpp map.h tile.h
 	g++ -c $(CFLG) $<
 
 creature.o:creature.cpp creature.h genome.h net.h map.h stdGL.h
@@ -45,19 +45,24 @@ objects.o:objects.cpp stdGL.h
 net.o:net.cpp net.h
 	g++ -c $(CFLG) $<
 
+tile.o:tile.cpp tile.h
+	g++ -c $(CFLG) $<
+
 text.o:text.cpp text.h stdGL.h
 	g++ -c $(CFLG) $<
 
 
 #  link
-run:game.o map.o creature.o net.o objects.o
+run:game.o map.o creature.o net.o objects.o tile.o
 	g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
-Test:test.o map.o creature.o net.o objects.o
+Test:test.o map.o creature.o net.o objects.o tile.o
 	g++ -g -O3 -o Test $^ $(GLIBS)
 
-test: Test
+test:FORCE Test 
 	./Test
+
+FORCE:
 
 
 #  Clean
