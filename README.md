@@ -1,4 +1,4 @@
-## Evonet
+## Terrarium
 
 this project runs an evolution simulator that
 - environment
