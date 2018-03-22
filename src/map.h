@@ -1,3 +1,4 @@
+#include "stdGL.h"
 #include "tile.h"
 #include <cstdlib>
 
@@ -7,14 +8,15 @@
 class Map
 {
 public:
-   int width, height;
+   int Width;
+   int Height;
    Tile** grid;
    float** heightmap;
 
    void render();
    void animate();
-   Map(int Width, int Height, int seed);
-   Map(int Width, int Height);
+   Map(int W, int H, int seed);
+   Map(int W, int H);
    ~Map();
    void generate();
    void generate(int seed);

@@ -101,7 +101,7 @@ bool init()
   }
 
   //Vsync
-  if (SDL_GL_SetSwapInterval(1) < 0)
+  if (SDL_GL_SetSwapInterval(0) < 0)
   {
     cerr << "SDL could not set Vsync: " << SDL_GetError() << endl;
 //    success = false;
@@ -131,14 +131,19 @@ void display()
 
   //view angle
   ex = Sin(-th)*Cos(ph)*zoom;
-  ey = Sin(ph)*zoom;
-  ez = Cos(-th)*Cos(ph)*zoom;
+  ey = Cos(-th)*Cos(ph)*zoom;
+  ez = Sin(ph)*zoom;
 
-  gluLookAt(ex,ey,ez , 0,0,0 , 0,Cos(ph),0);
+  gluLookAt(ex,ey,ez, 0,0,0, 0,0,Cos(ph));
 
   // Object Rendering
 
-  glUseProgram(0);
+  glColor3f(1.0,1.0,1.0);
+  ball(0,0,0, 0.25);
+
+  M->render();
+
+  //glUseProgram(0);
 
   //Render Text:
   //string lives = "Life: " + to_string(F.getLives());
@@ -173,7 +178,7 @@ void physics()
   //adjust the eye position
   //th += dth;
   //ph += dph;
-  //zoom = zoom<2.0?2.0:zoom+dzoom;
+  zoom = zoom<2.0?2.0:zoom+dzoom;
 
 }
 
@@ -192,8 +197,8 @@ void reshape(int width, int height)
   glLoadIdentity();
 
   //adjust projection
-  glOrtho(-w2h, w2h, -1, 1, -1, 1);
-  //gluPerspective(60, w2h, 0.5, 20*4);
+  //glOrtho(-w2h, w2h, -1, 1, -1, 1);
+  gluPerspective(60, w2h, 0.5, 20*4);
 
   //switch back to model matrix
   glMatrixMode(GL_MODELVIEW);
@@ -264,20 +269,21 @@ int main(int argc, char *argv[])
 
   M = new Map(10,10, 1729);
 
-  float** m1 = new float*[10];
-  for(int i=0; i < 10; ++i)
-    m1[i] = new float[10];
-  Genome g = {0.0, 0.0, 10,10,10, m1, m1};
-  creatures.push_back(new Creature(0.0, 0.0, 0.0, g));
+  //float** m1 = new float*[10];
+  //for(int i=0; i < 10; ++i)
+  //  m1[i] = new float[10];
+  //Genome g = {0.0, 0.0, 10,10,10, m1, m1};
+  //creatures.push_back(new Creature(0.0, 0.0, 0.0, g));
 
   reshape(w,h);
 
-
   int startuptime = SDL_GetTicks();
+  oldr = startuptime;
 
   ////////Main Loop////////
   while (!quit)
   {
+    //cout << "handling events\n";
     handleEvents();
 
     //// PHYSICS TIMING ////
@@ -285,6 +291,7 @@ int main(int argc, char *argv[])
     dr += r - oldr;
     while (dr >= 16)
     {
+      //cout << "physics step\n";
       physics();
       dr -= 16;
     }
