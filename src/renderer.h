@@ -20,15 +20,15 @@ private:
   int h = 1080;
 
   // eye postion
-  float zoom = 0;
+  float zoom = 2.0;
   float dzoom = 0;
-  float th = 0;
-  float ph = 0;
+  float th = 15;
+  float ph = 15;
   float dth = 0;
   float dph = 0;
 
   // Shader
-  int pixlight = 0;
+  //int pixlight = 0;
 
   // window object
   SDL_Window* window = NULL;
@@ -37,18 +37,16 @@ private:
   // objects to render
   std::vector<Renderable*> render_objects;
 
-  // functions
-  void reshape(int width, int height);
-
 public:
   // Constructor/Destructor
-  Renderer(SDL_Window* W);
+  Renderer(SDL_Window* W, SDL_GLContext* context);
 
   // update and render
   void physics();
   void display();
 
   // manage internal variables
+  void reshape(int width, int height);
   void addObject(Renderable* object);
   //void removeNullObjects();
   void keyStateUpdate(const Uint8* state);

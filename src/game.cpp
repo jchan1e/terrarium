@@ -23,43 +23,43 @@ using namespace std;
 
 //GLOBAL VARIABLES//
 //running or not
-bool quit = false;
-
-//Window Size
-int w = 1920;
-int h = 1080;
-
-//eye position and orientation
-double ex = 0;
-double ey = 0;
-double ez = 0;
-double zoom = 24;
-double dzoom = 0;
-double th = 0;
-double ph = 0;
-double dph = 0;
-double dth = 0;
-
-//Textures
-//unsigned int texture[5];
-
-//Shaders
-//int shader = 0;
-//int filter = 0;
-//int blend  = 0;
-//unsigned int img, frame;
-//int id;
-
-//Game Objects
-//Creature* creatures;
-//vector<Creature*> creatures;
-Map* M;
-
-////////////////////
-//functions that are called ahead of when they're defined
-//because C
-void reshape(int width, int height);
-void keyboard(const Uint8* state);
+//bool quit = false;
+//
+////Window Size
+//int w = 1920;
+//int h = 1080;
+//
+////eye position and orientation
+//double ex = 0;
+//double ey = 0;
+//double ez = 0;
+//double zoom = 24;
+//double dzoom = 0;
+//double th = 0;
+//double ph = 0;
+//double dph = 0;
+//double dth = 0;
+//
+////Textures
+////unsigned int texture[5];
+//
+////Shaders
+////int shader = 0;
+////int filter = 0;
+////int blend  = 0;
+////unsigned int img, frame;
+////int id;
+//
+////Game Objects
+////Creature* creatures;
+////vector<Creature*> creatures;
+//Map* M;
+//
+//////////////////////
+////functions that are called ahead of when they're defined
+////because C
+//void reshape(int width, int height);
+//void keyboard(const Uint8* state);
 
 //////// SDL Init Function ////////
 
@@ -73,7 +73,7 @@ bool init(SDL_Window* window, SDL_GLContext* context)
     success = false;
   }
 
-  window = SDL_CreateWindow("Terrarium", 0,0, w,h, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  window = SDL_CreateWindow("Terrarium", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   if (window == NULL)
   {
     cerr << "SDL failed to create a window: " << SDL_GetError() << endl;
@@ -88,7 +88,7 @@ bool init(SDL_Window* window, SDL_GLContext* context)
   }
 
   //Vsync
-  if (SDL_GL_SetSwapInterval(0) < 0)
+  if (SDL_GL_SetSwapInterval(1) < 0)
   {
     cerr << "SDL could not set Vsync: " << SDL_GetError() << endl;
 //    success = false;
@@ -272,9 +272,11 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  Renderer* R = new Renderer(window);
+  Renderer* R = new Renderer(window, &context);
 
+  Map* M;
   M = new Map(10,10, 1729);
+  R->addObject(M);
 
   //Timing
   int r = 0;
@@ -289,12 +291,13 @@ int main(int argc, char *argv[])
   //Genome g = {0.0, 0.0, 10,10,10, m1, m1};
   //creatures.push_back(new Creature(0.0, 0.0, 0.0, g));
 
-  reshape(w,h);
+  R->reshape(1920,1080);
 
   int startuptime = SDL_GetTicks();
   oldr = startuptime;
 
   ////////Main Loop////////
+  bool quit = false;
   while (!quit)
   {
     //cout << "handling events\n";
@@ -312,6 +315,7 @@ int main(int argc, char *argv[])
     oldr = r;
     R->display();
     frames += 1;
+    //quit = true;
   }
 
   cout << "Shutting Down\n";

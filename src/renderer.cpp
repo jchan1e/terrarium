@@ -1,4 +1,14 @@
 #include "renderer.h"
+#include <iostream>
+
+Renderer::Renderer(SDL_Window* w, SDL_GLContext* context) {
+  window = w;
+  context = context;
+}
+
+void Renderer::addObject(Renderable* object) {
+  render_objects.push_back(object);
+}
 
 void Renderer::reshape(int width, int height) {
   setW(width);
@@ -53,16 +63,18 @@ void Renderer::display() {
   //glUniform1f
 
   for (Renderable * object : render_objects) {
+    std::cout << "rendering an object\n";
     object->render();
   }
 
   // draw light source
-  glUseProgram(0);
+  //glUseProgram(0);
   glColor3f(1.0,1.0,1.0);
-  ball(0.0,0.0,5.0, 0.25);
+  ball(0.0,0.0,0.0, 0.25);
 
 
   // flush to GPU and swap buffers
+  std::cout << "display sanity check\n" << ex << " " << ey << " " << ez << std::endl;
   glFlush();
   SDL_GL_SwapWindow(window);
 }
@@ -115,4 +127,66 @@ int Renderer::handleEvents() {
         break;
     }
   }
+  return 0;
+}
+
+// All of these getters and setters
+int Renderer::getW() {
+  return w;
+}
+void Renderer::setW(int width) {
+  w = width;
+}
+
+int Renderer::getH() {
+  return h;
+}
+void Renderer::setH(int height) {
+  h = height;
+}
+
+float Renderer::getZoom() {
+  return zoom;
+}
+void Renderer::setZoom(float z) {
+  zoom = z;
+}
+
+float Renderer::getDzoom() {
+  return dzoom;
+}
+void Renderer::setDzoom(float dz) {
+  dzoom = dz;
+}
+
+float Renderer::getTh() {
+  return th;
+}
+void Renderer::setTh(float t) {
+  th = t;
+}
+
+float Renderer::getPh() {
+  return ph;
+}
+void Renderer::setPh(float p) {
+  ph = p;
+}
+
+float Renderer::getDth() {
+  return dth;
+}
+void Renderer::setDth(float t) {
+  dth = t;
+}
+
+float Renderer::getDph() {
+  return dph;
+}
+void Renderer::setDph(float p) {
+  dph = p;
+}
+
+void Renderer::Pause() {
+  pause = !pause;
 }

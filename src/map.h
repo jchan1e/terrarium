@@ -1,11 +1,12 @@
 #include "stdGL.h"
 #include "tile.h"
+#include "renderable.h"
 #include <cstdlib>
 
 #ifndef MAP_H
 #define MAP_H
 
-class Map {
+class Map : public Renderable {
 public:
   int Width;
   int Height;
