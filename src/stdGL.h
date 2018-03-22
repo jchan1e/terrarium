@@ -9,5 +9,6 @@
 #include <OpenGL/glu.h>
 #else
 #include <GL/glu.h>
+#include <GL/glext.h>
 #endif
 #endif

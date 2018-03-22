@@ -4,10 +4,10 @@
 #define SHADER_H
 
 // this function stolen from 4229 class examples
-char* ReadText(char* file)
+char* ReadText(char* file);
 // this function stolen from 4229 class examples
-int CreateShader(GLenum type, char* file)
+int CreateShader(GLenum type, char* file);
 // this function stolen (mostly) from 4229 class examples
-int CreateShaderProg(char* VertFile, char* FragFile)
+int CreateShaderProg(char* VertFile, char* FragFile);
 
 #endif
