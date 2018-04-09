@@ -1,4 +1,6 @@
 #include "shader.h"
+#include <iostream>
+using namespace std;
 
 // this function stolen from 4229 class examples
 char* ReadText(char* file)
@@ -6,14 +8,14 @@ char* ReadText(char* file)
    int n;
    char* buffer;
    FILE* f = fopen(file,"r");
-   if (!f) {cerr << "Cannot open text file " << file << endl; quit = true;}
+   if (!f) {cerr << "Cannot open text file " << file << endl;}
    fseek(f, 0, SEEK_END);
    n = ftell(f);
    rewind(f);
    buffer = (char*) malloc(n+1);
-   if (!buffer) {cerr << "Cannot allocate " << n+1 << " bytes for text file " << file << endl; quit = true;}
+   if (!buffer) {cerr << "Cannot allocate " << n+1 << " bytes for text file " << file << endl;}
    int h = fread(buffer, n, 1, f);
-   if (h != 1) {cerr << h << " Cannot read " << n << " bytes for text file " << file << endl; quit = true;}
+   if (h != 1) {cerr << h << " Cannot read " << n << " bytes for text file " << file << endl;}
    buffer[n] = 0;
    fclose(f);
    return buffer;

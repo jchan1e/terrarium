@@ -40,7 +40,10 @@ creature.o:creature.cpp creature.h genome.h net.h map.h stdGL.h
 	g++ -c $(CFLG) $<
 
 objects.o:objects.cpp stdGL.h
-	g++ -c $(CFLG) $<
+	g++ -c $(CFLG) $(SFLG) $<
+
+shader.o:shader.cpp shader.h
+	g++ -c $(CFLG) $(SFLG) $<
 
 #genome.o:genome.cpp genome.h net.h
 #	g++ -c $(CFLG) $<
@@ -56,7 +59,7 @@ text.o:text.cpp text.h stdGL.h
 
 
 #  link
-run:game.o renderer.o map.o creature.o net.o objects.o tile.o
+run:game.o renderer.o shader.o map.o creature.o net.o objects.o tile.o
 	g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
 Test:test.o map.o creature.o net.o objects.o tile.o

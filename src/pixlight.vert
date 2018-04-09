@@ -4,7 +4,6 @@
 varying vec3 View;
 varying vec3 Light;
 varying vec3 Normal;
-uniform float time;
 
 void main()
 {

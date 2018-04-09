@@ -63,7 +63,7 @@ using namespace std;
 
 //////// SDL Init Function ////////
 
-bool init(SDL_Window* window, SDL_GLContext* context)
+bool init(SDL_Window** window, SDL_GLContext* context)
 {
   bool success = true;
 
@@ -73,14 +73,14 @@ bool init(SDL_Window* window, SDL_GLContext* context)
     success = false;
   }
 
-  window = SDL_CreateWindow("Terrarium", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-  if (window == NULL)
+  *window = SDL_CreateWindow("Terrarium", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  if (*window == NULL)
   {
     cerr << "SDL failed to create a window: " << SDL_GetError() << endl;
     success = false;
   }
 
-  *context = SDL_GL_CreateContext(window);
+  *context = SDL_GL_CreateContext(*window);
   if (context == NULL)
   {
     cerr << "SDL failed to create OpenGL context: " << SDL_GetError() << endl;
@@ -266,7 +266,7 @@ int main(int argc, char *argv[])
   SDL_GLContext context;
 
   //Initialize
-  if (init(window, &context) != true)
+  if (init(&window, &context) != true)
   {
     cerr << "Shutting Down\n";
     return 1;

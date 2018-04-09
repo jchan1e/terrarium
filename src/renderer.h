@@ -22,13 +22,13 @@ private:
   // eye postion
   float zoom = 2.0;
   float dzoom = 0;
-  float th = 15;
+  float th =  0;
   float ph = 15;
   float dth = 0;
   float dph = 0;
 
   // Shader
-  //int pixlight = 0;
+  int pixlight = 0;
 
   // window object
   SDL_Window* window = NULL;
@@ -39,7 +39,7 @@ private:
 
 public:
   // Constructor/Destructor
-  Renderer(SDL_Window* W, SDL_GLContext* context);
+  Renderer(SDL_Window* w, SDL_GLContext* context);
 
   // update and render
   void physics();

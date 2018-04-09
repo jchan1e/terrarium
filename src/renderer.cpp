@@ -1,9 +1,11 @@
 #include "renderer.h"
 #include <iostream>
 
-Renderer::Renderer(SDL_Window* w, SDL_GLContext* context) {
+Renderer::Renderer(SDL_Window* w, SDL_GLContext* c) {
   window = w;
-  context = context;
+  context = c;
+//  std::cout << glGetString(GL_VERSION) << std::endl;
+//  pixlight = CreateShaderProg("pixlight.vert", "pixlight.frag");
 }
 
 void Renderer::addObject(Renderable* object) {
@@ -11,6 +13,7 @@ void Renderer::addObject(Renderable* object) {
 }
 
 void Renderer::reshape(int width, int height) {
+  std::cout << "reshape function\n";
   setW(width);
   setH(height);
 
@@ -23,7 +26,7 @@ void Renderer::reshape(int width, int height) {
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   int fov = 60;
-  int nearPlane = 0.5;
+  int nearPlane = 0.1;
   int farPlane = 80;
   gluPerspective(fov, w2h, nearPlane, farPlane);
 
@@ -46,8 +49,9 @@ void Renderer::physics() {
 void Renderer::display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
-  //glEnable(GL_CULL_FACE);
+  glEnable(GL_CULL_FACE);
 
+  reshape(w,h);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
@@ -58,12 +62,10 @@ void Renderer::display() {
   gluLookAt(ex,ey,ez, 0,0,0, 0,0,Cos(getPh()));
 
   // render objects
-  //useProgram(pixlight);
-  //getUniformLocation
-  //glUniform1f
+  //glUseProgram(pixlight);
 
   for (Renderable * object : render_objects) {
-    std::cout << "rendering an object\n";
+    //std::cout << "rendering an object\n";
     object->render();
   }
 
@@ -74,7 +76,7 @@ void Renderer::display() {
 
 
   // flush to GPU and swap buffers
-  std::cout << "display sanity check\n" << ex << " " << ey << " " << ez << std::endl;
+  //std::cout << "display sanity check\n" << ex << " " << ey << " " << ez << std::endl;
   glFlush();
   SDL_GL_SwapWindow(window);
 }
