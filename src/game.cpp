@@ -86,6 +86,8 @@ bool init(SDL_Window** window, SDL_GLContext* context)
     cerr << "SDL failed to create OpenGL context: " << SDL_GetError() << endl;
     success = false;
   }
+  //SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+
 
   //Vsync
   if (SDL_GL_SetSwapInterval(1) < 0)
@@ -101,6 +103,7 @@ bool init(SDL_Window** window, SDL_GLContext* context)
   //  success = false;
   //}
 
+  cout << SDL_GetError() << endl;
   return success;
 }
 

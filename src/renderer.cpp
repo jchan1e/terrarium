@@ -13,20 +13,20 @@ void Renderer::addObject(Renderable* object) {
 }
 
 void Renderer::reshape(int width, int height) {
-  std::cout << "reshape function\n";
+  //std::cout << "reshape function\n";
   setW(width);
   setH(height);
 
   // new aspect ratio
-  float w2h = (height < 0) ? (double) width/height : 1;
+  float w2h = (height > 0) ? (double) width/height : 1;
   // set viewport to match new window size
-  glViewport(0,0, w,h);
+  glViewport(0,0, width,height);
 
   //adjust projection matrix
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   int fov = 60;
-  int nearPlane = 0.1;
+  int nearPlane = 0.5;
   int farPlane = 80;
   gluPerspective(fov, w2h, nearPlane, farPlane);
 
@@ -49,9 +49,12 @@ void Renderer::physics() {
 void Renderer::display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
+  glDepthFunc(GL_EQUAL);
+  //glEnable(GL_CULL_FACE);
 
-  reshape(w,h);
+  //glMatrixMode(GL_PROJECTION);
+  //glLoadIdentity();
+  //reshape(w,h);
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
@@ -64,7 +67,7 @@ void Renderer::display() {
   // render objects
   //glUseProgram(pixlight);
 
-  for (Renderable * object : render_objects) {
+  for (Renderable* object : render_objects) {
     //std::cout << "rendering an object\n";
     object->render();
   }
@@ -83,16 +86,16 @@ void Renderer::display() {
 
 void Renderer::keyStateUpdate(const Uint8* state) {
   if (state[SDL_SCANCODE_LEFT])
-    setDth(-0.1);
+    setDth(-0.5);
   else if (state[SDL_SCANCODE_RIGHT])
-    setDth(0.1);
+    setDth(0.5);
   else
     setDth(0.0);
 
   if (state[SDL_SCANCODE_UP])
-    setDph(-0.1);
+    setDph(0.5);
   else if (state[SDL_SCANCODE_DOWN])
-    setDph(0.1);
+    setDph(-0.5);
   else
     setDph(0.0);
 

@@ -271,9 +271,9 @@ void Map::render() {
       glColor3f(0.0,0.8,0.8);
       glVertex3f(i+centerw,     j+centerh,     heightmap[i][j]);
       glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
-      glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[1]);
+      glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);
       glVertex3f(i+centerw+0.5, j+centerh+0.5, corners[2]);
-      glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[3]);
+      glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
       glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
       glEnd();
       //std::cout << i+centerw << " " << j+centerh << std::endl;

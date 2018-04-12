@@ -16,8 +16,8 @@ GLIBS=-lGLU -lGL -lm $(shell sdl2-config --libs)
 CLEAN=rm -rf run Test *.o *.a
 endif
 #endif
-CFLG=-g -O3 -Wall -std=c++11
-#CFLG=-g -Wall -std=c++11
+#CFLG=-g -O3 -Wall -std=c++11
+CFLG=-g -Wall -std=c++11
 
 compile:run
 
@@ -60,7 +60,8 @@ text.o:text.cpp text.h stdGL.h
 
 #  link
 run:game.o renderer.o shader.o map.o creature.o net.o objects.o tile.o
-	g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
+	g++ -g -o run $^ $(GLIBS) -lSDL2_ttf
+	#g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
 Test:test.o map.o creature.o net.o objects.o tile.o
 	g++ -g -O3 -o Test $^ $(GLIBS)
