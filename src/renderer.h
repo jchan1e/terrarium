@@ -39,7 +39,7 @@ private:
 
 public:
   // Constructor/Destructor
-  Renderer(SDL_Window* w, SDL_GLContext* context);
+  Renderer();//, SDL_GLContext* context);
 
   // update and render
   void physics();

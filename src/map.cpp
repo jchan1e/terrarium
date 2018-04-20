@@ -197,7 +197,7 @@ void Map::generate() {
 void Map::animate() {
   for (int i=0; i < Width; ++i) {
     for (int j=0; j < Height; ++j) {
-      grid[i][j].grow();
+      //grid[i][j].grow();
     }
   }
 }
@@ -268,7 +268,7 @@ void Map::render() {
       float centerw = -Width/2;
       float centerh = -Height/2;
       glBegin(GL_TRIANGLE_FAN);
-      glColor3f(0.0,0.8,0.8);
+      glColor3f(0.5,0.6,0.6);
       glVertex3f(i+centerw,     j+centerh,     heightmap[i][j]);
       glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
       glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);

@@ -63,7 +63,7 @@ using namespace std;
 
 //////// SDL Init Function ////////
 
-bool init(SDL_Window** window, SDL_GLContext* context)
+bool init()
 {
   bool success = true;
 
@@ -73,28 +73,28 @@ bool init(SDL_Window** window, SDL_GLContext* context)
     success = false;
   }
 
-  *window = SDL_CreateWindow("Terrarium", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
-  if (*window == NULL)
-  {
-    cerr << "SDL failed to create a window: " << SDL_GetError() << endl;
-    success = false;
-  }
+  //*window = SDL_CreateWindow("Terrarium", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  //if (*window == NULL)
+  //{
+  //  cerr << "SDL failed to create a window: " << SDL_GetError() << endl;
+  //  success = false;
+  //}
 
-  *context = SDL_GL_CreateContext(*window);
-  if (context == NULL)
-  {
-    cerr << "SDL failed to create OpenGL context: " << SDL_GetError() << endl;
-    success = false;
-  }
+  //*context = SDL_GL_CreateContext(*window);
+  //if (*context == NULL)
+  //{
+  //  cerr << "SDL failed to create OpenGL context: " << SDL_GetError() << endl;
+  //  success = false;
+  //}
   //SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
 
 
   //Vsync
-  if (SDL_GL_SetSwapInterval(1) < 0)
-  {
-    cerr << "SDL could not set Vsync: " << SDL_GetError() << endl;
-//    success = false;
-  }
+  //if (SDL_GL_SetSwapInterval(1) < 0)
+  //{
+  //  cerr << "SDL could not set Vsync: " << SDL_GetError() << endl;
+////    success = false;
+  //}
 
   //TTF_Font handling
   //if (TTF_Init() < 0)
@@ -103,7 +103,7 @@ bool init(SDL_Window** window, SDL_GLContext* context)
   //  success = false;
   //}
 
-  cout << SDL_GetError() << endl;
+  //cout << SDL_GetError() << endl;
   return success;
 }
 
@@ -264,21 +264,18 @@ bool init(SDL_Window** window, SDL_GLContext* context)
 
 int main(int argc, char *argv[])
 {
-  //SDL Window/OpenGL Context
-  SDL_Window* window = NULL;
-  SDL_GLContext context;
-
   //Initialize
-  if (init(&window, &context) != true)
+  if (init() != true)
   {
     cerr << "Shutting Down\n";
     return 1;
   }
 
-  Renderer* R = new Renderer(window, &context);
+  Renderer* R = new Renderer();
+  R->reshape(1920,1080);
 
   Map* M;
-  M = new Map(10,10, 1729);
+  M = new Map(20,20, 1729);
   R->addObject(M);
 
   //Timing
@@ -287,14 +284,6 @@ int main(int argc, char *argv[])
   int oldr = 0;
   //int Pause = 0;
   int frames = 0;
-
-  //float** m1 = new float*[10];
-  //for(int i=0; i < 10; ++i)
-  //  m1[i] = new float[10];
-  //Genome g = {0.0, 0.0, 10,10,10, m1, m1};
-  //creatures.push_back(new Creature(0.0, 0.0, 0.0, g));
-
-  R->reshape(1920,1080);
 
   int startuptime = SDL_GetTicks();
   oldr = startuptime;

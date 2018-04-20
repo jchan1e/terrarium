@@ -1,33 +1,50 @@
 #include "renderer.h"
-#include <iostream>
+using namespace std;
 
-Renderer::Renderer(SDL_Window* w, SDL_GLContext* c) {
-  window = w;
-  context = c;
+Renderer::Renderer(){ //, SDL_GLContext* c) {
+  bool success = true;
+
+  window = SDL_CreateWindow("Terrarum", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  if (window == NULL) {
+    cerr << "SDL Failed to create a window: " << SDL_GetError() << endl;
+    success = false;
+  }
+
+  context = SDL_GL_CreateContext(window);
+  if (context == NULL) {
+    cerr << "SDL failed to create an OpenGL context: " << SDL_GetError() << endl;
+    success = false;
+  }
+
+  if (!success)
+    exit(-1);
 //  std::cout << glGetString(GL_VERSION) << std::endl;
 //  pixlight = CreateShaderProg("pixlight.vert", "pixlight.frag");
+  //int depth_size = 0;
+  //SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depth_size);
+  //cout << depth_size << endl;
 }
 
 void Renderer::addObject(Renderable* object) {
   render_objects.push_back(object);
 }
 
-void Renderer::reshape(int width, int height) {
+void Renderer::reshape(int Width, int Height) {
   //std::cout << "reshape function\n";
-  setW(width);
-  setH(height);
+  setW(Width);
+  setH(Height);
 
   // new aspect ratio
-  float w2h = (height > 0) ? (double) width/height : 1;
+  float w2h = (Height > 0) ? (double) Width/Height : 1;
   // set viewport to match new window size
-  glViewport(0,0, width,height);
+  glViewport(0,0, Width,Height);
 
   //adjust projection matrix
   glMatrixMode(GL_PROJECTION);
   glLoadIdentity();
   int fov = 60;
-  int nearPlane = 0.5;
-  int farPlane = 80;
+  int nearPlane = 1.0;
+  int farPlane = 100;
   gluPerspective(fov, w2h, nearPlane, farPlane);
 
   // switch back to modelview matrix
@@ -48,9 +65,12 @@ void Renderer::physics() {
 
 void Renderer::display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  //glClearDepth(1.0);
   glEnable(GL_DEPTH_TEST);
-  glDepthFunc(GL_EQUAL);
+  //glDepthFunc(GL_EQUAL);
+  //glDepthFunc(GL_GREATER);
   //glEnable(GL_CULL_FACE);
+  //glShadeModel(GL_FLAT);
 
   //glMatrixMode(GL_PROJECTION);
   //glLoadIdentity();
@@ -77,6 +97,7 @@ void Renderer::display() {
   glColor3f(1.0,1.0,1.0);
   ball(0.0,0.0,0.0, 0.25);
 
+  glDisable(GL_DEPTH_TEST);
 
   // flush to GPU and swap buffers
   //std::cout << "display sanity check\n" << ex << " " << ey << " " << ez << std::endl;
