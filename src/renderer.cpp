@@ -19,7 +19,7 @@ Renderer::Renderer(){ //, SDL_GLContext* c) {
   if (!success)
     exit(-1);
 //  std::cout << glGetString(GL_VERSION) << std::endl;
-//  pixlight = CreateShaderProg("pixlight.vert", "pixlight.frag");
+  pixlight = CreateShaderProg((char*)"pixlight.vert", (char*)"pixlight.frag");
   //int depth_size = 0;
   //SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depth_size);
   //cout << depth_size << endl;
@@ -67,10 +67,8 @@ void Renderer::display() {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   //glClearDepth(1.0);
   glEnable(GL_DEPTH_TEST);
-  //glDepthFunc(GL_EQUAL);
-  //glDepthFunc(GL_GREATER);
-  //glEnable(GL_CULL_FACE);
-  //glShadeModel(GL_FLAT);
+  glEnable(GL_CULL_FACE);
+  glEnable(GL_NORMALIZE);
 
   //glMatrixMode(GL_PROJECTION);
   //glLoadIdentity();
@@ -84,8 +82,31 @@ void Renderer::display() {
   float ez = Sin(getPh())*getZoom();
   gluLookAt(ex,ey,ez, 0,0,0, 0,0,Cos(getPh()));
 
+  // light source
+  glEnable(GL_LIGHTING);
+  //glShadeModel(GL_FLAT);
+  float white[4]   = {1.0,1.0,1.0,1.0};
+  float pos[4]     = {0.0, 0.0, 8.0, 1.0};
+  float ambient[4] = {0.12, 0.15, 0.16, 1.0};
+  float diffuse[4] = {0.65, 0.65, 0.60, 1.0};
+  float specular[4]= {0.7, 0.7, 0.9, 1.0};
+  float shininess  = 64;
+
+  //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);
+  glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+  glEnable(GL_COLOR_MATERIAL);
+
+  glEnable(GL_LIGHT0);
+  glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);
+  glLightfv(GL_LIGHT0, GL_SPECULAR, specular);
+  glLightfv(GL_LIGHT0, GL_POSITION, pos);
+
+  glMaterialfv(GL_FRONT, GL_SHININESS, &shininess);
+  glMaterialfv(GL_FRONT, GL_SPECULAR, white);
+
   // render objects
-  //glUseProgram(pixlight);
+  glUseProgram(pixlight);
 
   for (Renderable* object : render_objects) {
     //std::cout << "rendering an object\n";
@@ -94,10 +115,9 @@ void Renderer::display() {
 
   // draw light source
   //glUseProgram(0);
+  glDisable(GL_LIGHTING);
   glColor3f(1.0,1.0,1.0);
-  ball(0.0,0.0,0.0, 0.25);
-
-  glDisable(GL_DEPTH_TEST);
+  ball(pos[0],pos[1],pos[2], 0.25);
 
   // flush to GPU and swap buffers
   //std::cout << "display sanity check\n" << ex << " " << ey << " " << ez << std::endl;

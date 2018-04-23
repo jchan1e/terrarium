@@ -267,13 +267,18 @@ void Map::render() {
 
       float centerw = -Width/2;
       float centerh = -Height/2;
+      float centerd = (corners[0]+corners[1]+corners[2]+corners[3])/4;
+      float normx = (corners[0]+corners[1]-corners[2]-corners[3])/4;
+      float normy = (corners[0]-corners[1]-corners[2]+corners[3])/4;
+      float normz = 1.0;
       glBegin(GL_TRIANGLE_FAN);
       glColor3f(0.5,0.6,0.6);
-      glVertex3f(i+centerw,     j+centerh,     heightmap[i][j]);
+      glNormal3f(normx, normy, normz);
+      glVertex3f(i+centerw,     j+centerh,     centerd);
       glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
-      glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);
-      glVertex3f(i+centerw+0.5, j+centerh+0.5, corners[2]);
       glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
+      glVertex3f(i+centerw+0.5, j+centerh+0.5, corners[2]);
+      glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);
       glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
       glEnd();
       //std::cout << i+centerw << " " << j+centerh << std::endl;
