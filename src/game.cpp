@@ -15,7 +15,7 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include "map.h"
-#include "creature.h"
+#include "ant.h"
 #include "renderer.h"
 #include "text.h"
 
@@ -51,8 +51,8 @@ using namespace std;
 ////int id;
 //
 ////Game Objects
-////Creature* creatures;
-////vector<Creature*> creatures;
+////Ant* ants;
+////vector<Ant*> ants;
 //Map* M;
 //
 //////////////////////

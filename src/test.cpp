@@ -7,7 +7,7 @@
 #include "genome.h"
 #include "net.h"
 #include "map.h"
-#include "creature.h"
+#include "ant.h"
 
 using namespace std;
 
@@ -94,9 +94,9 @@ int main() {
   if (netsuccess)
     printf("Net Passed\n");
 
-  // Creature Tests
+  // Ant Tests
   //Genome G = {0.333, 0.5, 10, 10, 10, mi1, m1o};
-  //Creature C(0.0, 0.0, M_PI/3, G);
+  //Ant C(0.0, 0.0, M_PI/3, G);
   //C.animate();
   // check that it worked
 

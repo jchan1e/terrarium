@@ -24,10 +24,10 @@ compile:run
 all:run test
 
 
-test.o:test.cpp map.h net.h genome.h creature.h
+test.o:test.cpp map.h net.h genome.h ant.h
 	g++ -c $(CFLG) $<
 
-game.o:game.cpp renderer.h map.h net.h genome.h creature.h stdGL.h
+game.o:game.cpp renderer.h map.h net.h genome.h ant.h stdGL.h
 	g++ -c $(CFLG) $(SFLG) $<
 
 renderer.o:renderer.cpp renderer.h renderable.h shader.h stdGL.h
@@ -36,7 +36,7 @@ renderer.o:renderer.cpp renderer.h renderable.h shader.h stdGL.h
 map.o:map.cpp map.h tile.h
 	g++ -c $(CFLG) $<
 
-creature.o:creature.cpp creature.h genome.h net.h map.h stdGL.h
+ant.o:ant.cpp ant.h genome.h net.h map.h stdGL.h
 	g++ -c $(CFLG) $<
 
 objects.o:objects.cpp stdGL.h
@@ -59,11 +59,11 @@ text.o:text.cpp text.h stdGL.h
 
 
 #  link
-run:game.o renderer.o shader.o map.o creature.o net.o objects.o tile.o
+run:game.o renderer.o shader.o map.o ant.o net.o objects.o tile.o
 	g++ -g -o run $^ $(GLIBS) -lSDL2_ttf
 	#g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
-Test:test.o map.o creature.o net.o objects.o tile.o
+Test:test.o map.o ant.o net.o objects.o tile.o
 	g++ -g -O3 -o Test $^ $(GLIBS)
 
 test:FORCE Test 

@@ -1,4 +1,4 @@
-#include "creature.h"
+#include "ant.h"
 #include "net.h"
 #include "map.h"
 #include <cmath>
@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Creature::Creature(float X, float Y, float Th, Genome G) {
+Ant::Ant(float X, float Y, float Th, Genome G) {
   g = G;
   x = X;
   y = Y;
@@ -17,13 +17,13 @@ Creature::Creature(float X, float Y, float Th, Genome G) {
   net = new Net(g.ni, g.n1, g.no, g.mi1, g.m1o);
 }
 
-Creature::~Creature() {
+Ant::~Ant() {
   delete net;
   delete g.mi1;
   delete g.m1o;
 }
 
-void Creature::render() {
+void Ant::render() {
   // transform size & location
   glPushMatrix();
   glTranslated(x, y, 0);
@@ -36,7 +36,7 @@ void Creature::render() {
   glPopMatrix();
 }
 
-void Creature::animate() {
+void Ant::animate() {
   // evaluate the NN
-  // outputs from the NN determine the creature's actions
+  // outputs from the NN determine the ant's actions
 }

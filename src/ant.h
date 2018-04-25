@@ -6,7 +6,7 @@
 #ifndef CREATURE_H
 #define CREATURE_H
 
-class Creature
+class Ant
 {
 public:
   float x, y, dx, dy, theta, speed;
@@ -17,8 +17,8 @@ public:
   Genome g;
   Net* net;
 
-  Creature(float X, float Y, float Th, Genome G);
-  ~Creature();
+  Ant(float X, float Y, float Th, Genome G);
+  ~Ant();
   void render();
   void animate();
 };
