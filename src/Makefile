@@ -60,7 +60,7 @@ text.o:text.cpp text.h stdGL.h
 
 #  link
 run:game.o renderer.o shader.o map.o ant.o net.o objects.o tile.o
-	g++ -g -o run $^ $(GLIBS) -lSDL2_ttf
+	g++ -g -o run $^ $(GLIBS)
 	#g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
 Test:test.o map.o ant.o net.o objects.o tile.o

@@ -17,7 +17,7 @@
 #include "map.h"
 #include "ant.h"
 #include "renderer.h"
-#include "text.h"
+//#include "text.h"
 
 using namespace std;
 
