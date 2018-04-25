@@ -40,3 +40,8 @@ void Ant::animate() {
   // evaluate the NN
   // outputs from the NN determine the ant's actions
 }
+
+void Ant::move(float velocity, float Th) {
+     x += velocity*cos(Th);
+     y += velocity*sin(Th);
+}

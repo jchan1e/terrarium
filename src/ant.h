@@ -21,6 +21,7 @@ public:
   ~Ant();
   void render();
   void animate();
+  void move(float velocity, float Th);
 };
 
 #endif
