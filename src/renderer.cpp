@@ -61,6 +61,9 @@ void Renderer::physics() {
   setPh(getPh() + getDph());
   float z = getZoom();
   setZoom(z < 2.0 ? 2.0 : z + getDzoom());
+  for (Renderable* object : render_objects){
+    object->animate();
+  }
 }
 
 void Renderer::display() {

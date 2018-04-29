@@ -34,6 +34,7 @@ void Ant::render() {
 
 void Ant::animate() {
   // Update the state of this ant by one timestep
+  move(0.005, M_PI/4);
   z = m->getHeight(x, y);
 }
 
