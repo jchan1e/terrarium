@@ -114,7 +114,7 @@ void Renderer::display() {
   }
 
   // draw light source
-  //glUseProgram(0);
+  glUseProgram(0);
   glDisable(GL_LIGHTING);
   glColor3f(1.0,1.0,1.0);
   ball(pos[0],pos[1],pos[2], 0.25);

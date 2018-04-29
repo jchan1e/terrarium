@@ -65,9 +65,10 @@ void Map::generate() {
         HL = delta[hi][lj];
       if (hi < Width && hj < Height)
         HH = delta[hi][hj];
-      float M1 = LL + (i%16)/(float)16 * (LH-LL);
-      float M2 = HL + (i%16)/(float)16 * (HH-HL);
-      delta[i][j] = M1 + (j%16)/(float)16 * (M2-M1);
+      // lerp
+      float M1    = LL + (i-li)/16.0 * (LH-LL);
+      float M2    = HL + (i-li)/16.0 * (HH-HL);
+      delta[i][j] = M1 + (j-lj)/16.0 * (M2-M1);
     }
   }
   for(int i=0; i < Width; ++i) {
@@ -204,7 +205,7 @@ void Map::animate() {
 
 void Map::render() {
   glPushMatrix();
-  glScalef(1,1,2);
+  glScalef(1,1,3);
 
   for (int i=0; i < Width; ++i) {
     for (int j=0; j < Height; ++j) {
@@ -271,8 +272,8 @@ void Map::render() {
       float normx = (corners[0]+corners[1]-corners[2]-corners[3])/4;
       float normy = (corners[0]-corners[1]-corners[2]+corners[3])/4;
       float normz = 1.0;
-      glBegin(GL_TRIANGLE_FAN);
       glColor3f(0.5,0.6,0.6);
+      glBegin(GL_TRIANGLE_FAN);
       glNormal3f(normx, normy, normz);
       glVertex3f(i+centerw,     j+centerh,     centerd);
       glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
@@ -285,4 +286,10 @@ void Map::render() {
     }
   }
   glPopMatrix();
+}
+
+float Map::getHeight(int x, int y) {
+}
+
+int Map::getState(int x, int y) {
 }

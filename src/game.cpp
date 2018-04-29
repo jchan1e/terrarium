@@ -277,6 +277,9 @@ int main(int argc, char *argv[])
   Map* M;
   M = new Map(16,16, 1729);
   R->addObject(M);
+  Ant* A;
+  A = new Ant(2,2, M);
+  R->addObject(A);
 
   //Timing
   int r = 0;
