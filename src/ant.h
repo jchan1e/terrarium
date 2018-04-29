@@ -10,13 +10,9 @@
 class Ant : public Renderable
 {
 public:
-  float x, y, dx, dy;
-  //float hue, mhue;
-  //float health;
-  //float atk;
-  //float leye, reye;
-  //Genome g;
-  //Net* net;
+  float x, y, z;
+  float theta;
+  float speed;
   Map* m;
 
   Ant(float X, float Y, Map* M);

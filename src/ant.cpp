@@ -10,10 +10,9 @@ Ant::Ant(float X, float Y, Map* M) {
   m = M;
   x = X;
   y = Y;
-  dx = 0;
-  dy = 0;
-  //theta = (float)rand()/RAND_MAX * M_PI * 2;
-  //speed = 0;
+  z = m->getHeight(x,y);
+  theta = (float)rand()/RAND_MAX * M_PI * 2;
+  speed = 0;
 }
 
 Ant::~Ant() {
@@ -22,8 +21,8 @@ Ant::~Ant() {
 void Ant::render() {
   // transform size & location
   glPushMatrix();
-  glTranslated(x, y, 0);
-  //glRotated(0, 0, 1, theta);
+  glTranslated(x, y, z);
+  glRotated(0, 0, 1, theta);
 
   octahedron(0,0,0, 0, 0.25);
   //and other stuff
@@ -35,6 +34,7 @@ void Ant::render() {
 
 void Ant::animate() {
   // Update the state of this ant by one timestep
+  z = m->getHeight(x, y);
 }
 
 void Ant::move(float velocity, float Th) {

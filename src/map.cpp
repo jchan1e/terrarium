@@ -173,10 +173,11 @@ void Map::generate() {
   for(int i=0; i < Width; ++i) {
     for(int j=0; j < Height; ++j) {
       heightmap[i][j] += delta[i][j];
+      heightmap[i][j] = heightmap[i][j]*3;
     }
   }
 
-  // Initialize grid
+  // Initialize tile grid
   grid = new Tile*[Width];
   for(int i=0; i < Width; ++i) {
     grid[i] = new Tile[Height];
@@ -198,14 +199,14 @@ void Map::generate() {
 void Map::animate() {
   for (int i=0; i < Width; ++i) {
     for (int j=0; j < Height; ++j) {
-      //grid[i][j].grow();
+      //pass for now
     }
   }
 }
 
 void Map::render() {
   glPushMatrix();
-  glScalef(1,1,3);
+  //glScalef(1,1,3);
 
   for (int i=0; i < Width; ++i) {
     for (int j=0; j < Height; ++j) {
@@ -288,7 +289,20 @@ void Map::render() {
   glPopMatrix();
 }
 
-float Map::getHeight(int x, int y) {
+float lerp(float x0, float x1, float w) {
+  return (1-w)*x0 + w*x1;
+}
+
+float Map::getHeight(float x, float y) {
+  if (x < 0 || y < 0 || x >= Width || y >= Height)
+    return 0.0;
+  int x0 = floor(x);
+  int y0 = floor(y);
+  int x1 = ceil(x);
+  int y1 = ceil(y);
+  float h0 = lerp(heightmap[x0][y0], heightmap[x0][y1], y-y0);
+  float h1 = lerp(heightmap[x1][y0], heightmap[x1][y1], y-y0);
+  return lerp(h0, h1, x-x0);
 }
 
 int Map::getState(int x, int y) {

@@ -21,7 +21,7 @@ public:
   void generate();
   void generate(int seed);
 
-  float getHeight(int x, int y);
+  float getHeight(float x, float y);
   int getState(int x, int y);
 };
 
