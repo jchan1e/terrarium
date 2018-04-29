@@ -4,7 +4,7 @@ using namespace std;
 Renderer::Renderer(){ //, SDL_GLContext* c) {
   bool success = true;
 
-  window = SDL_CreateWindow("Terrarum", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
+  window = SDL_CreateWindow("Terrarium", 0,0, 1920,1080, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   if (window == NULL) {
     cerr << "SDL Failed to create a window: " << SDL_GetError() << endl;
     success = false;

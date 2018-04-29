@@ -36,3 +36,8 @@ void Ant::render() {
 void Ant::animate() {
   // Update the state of this ant by one timestep
 }
+
+void Ant::move(float velocity, float Th) {
+     x += velocity*cos(Th);
+     y += velocity*sin(Th);
+}
