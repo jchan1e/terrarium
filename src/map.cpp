@@ -315,3 +315,6 @@ void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighb
 void Map::addAnt(Ant* ant) {
   ants.push_back(ant);
 }
+
+int Map::getH() { return Height; }
+int Map::getW() { return Width; }

@@ -11,32 +11,47 @@
 class Ant : public Renderable
 {
 public:
-  float x, y, z;
-  float theta;
-  float speed;
-  Map* m;
-  bool locked;
-  std::vector <Ant*> neighbors;
 
-  float getX();
-  float getY();
-  void setY(float Y);
-  void setX(float X);
-  float getTheta();
-  void setTheta(float th);
-  bool isLocked();
+    //Members
+    float x, y, z;
+    float theta;
+    float speed;
+    Map* m;
+    bool locked;
+    std::vector <Ant*> neighbors;
 
-  Ant(float X, float Y, Map* M);
-  ~Ant();
+    //Con/Destructor
+    Ant(float X, float Y, Map* M);
+    ~Ant();
 
-  //Interface methods
-  void render();
-  void animate();
+    //Getters
+    float getX();
+    float getY();
+    float getZ();
+    float getV();
+    float getTheta();
+    bool isLocked();
 
-  void move(float velocity, float Th);
-  void lock();
-  void unlock();
-  void getNeighbors(float radius);
+    //Setters
+    void setX(float X);
+    void setY(float Y);
+    void setZ(float Z);
+    void setV(float V);
+    void setTheta(float th);
+    void lock();
+    void unlock();
+    void setMap(Map* M);
+
+    //Interface methods
+    void render();
+    void animate();
+
+    //Animate methods
+    void move(float velocity, float Th);
+    void getNeighbors(float radius);
+
+    //Boid-like behavior
+    void computeAlignment();
 };
 
 #endif
