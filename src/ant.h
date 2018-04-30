@@ -26,7 +26,7 @@ public:
 
     //Helper function for direction
     void normalize();
-    
+
     //Getters
     float getX();
     float getY();
@@ -58,9 +58,9 @@ public:
     void getNeighbors(float radius);
 
     //Boid-like behavior
-    void computeAlignment();
-    void computeSeparation();
-    void computeCohesion();
+    void computeAlignment(float weight);
+    void computeSeparation(float radius, float weight);
+    void computeCohesion(float weight);
 };
 
 #endif

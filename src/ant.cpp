@@ -9,9 +9,10 @@ Ant::Ant(float X, float Y, Map* M) {
     setX(X);
     setY(Y);
     setZ(m->getHeight(x,y));
-    setSpeed(0.01);
+    setSpeed(0.05);
     setDX(0);
     setDY(0);
+
 }
 
 //Destructor
@@ -45,7 +46,7 @@ void Ant::setRandomV() { //sets dx, dy to random direction
     normalize();
 }
 void Ant::setZ(float Z) { z = Z; }
-void Ant::setSpeed(float V) {speed = V; }
+void Ant::setSpeed(float V) { speed = V; }
 void Ant::lock() { locked = true; }
 void Ant::unlock() { locked = false; }
 void Ant::setMap(Map* M) { m = M; }
@@ -68,11 +69,11 @@ void Ant::render() {
 
 void Ant::animate() {
     // Update the state of this ant by one timestep
-    getNeighbors(2);
+    getNeighbors(6);
     if (!neighbors.empty()) {
-        computeCohesion();
-        computeAlignment();
-        computeSeparation();
+        computeCohesion(0);
+        computeAlignment(0);
+        computeSeparation(1, 0);
     } else {
         setRandomV();
     }
@@ -85,16 +86,14 @@ void Ant::move() {
     float newx = getX() + getSpeed()*getDX();
     float newy = getY() + getSpeed()*getDY();
 
-    if (newx >= m->getW()) {
-        newx = 0;
-    } else if (newx <= 0) {
-        newx = m->getW();
-    } if (newy >= m->getH()) {
-        newy = 0;
-    } else if (newy <= 0) {
-        newy = m->getH();
-    }
+    if (newx >= m->getH() || newx <= 0){
+        setDX(-getDX());
+        newx = getX() + getSpeed()*getDX();
+    } if (newy >= m->getW() || newy <= 0){
+        setDY(-getDY());
+        newy = getY() + getSpeed()*getDY();
 
+    }
     setX(newx);
     setY(newy);
     setZ(m->getHeight(getX(),getY()));
@@ -106,7 +105,7 @@ void Ant::getNeighbors(float radius) {
 }
 
 //Boids stuff
-void Ant::computeAlignment() {
+void Ant::computeAlignment(float weight) {
     if (!neighbors.empty()) {
         float newDX = 0;
         float newDY = 0;
@@ -119,18 +118,24 @@ void Ant::computeAlignment() {
 
         setDX(getDX() + newDX/n);
         setDY(getDY() + newDY/n);
+
         normalize();
     }
 }
 
-void Ant::computeSeparation() {
+void Ant::computeSeparation(float radius, float weight) {
     if (!neighbors.empty()) {
         float mx = 0, my = 0;
         float n = neighbors.size();
 
         for (Ant* neighbor : neighbors) {
-            mx += getX() - neighbor->getX();
-            my += getY() - neighbor->getY();
+            float delx = neighbor->getX() - getX();
+            float dely = neighbor->getY() - getY();
+            if (sqrt(delx*delx + dely*dely) < radius) {
+                mx -= delx;
+                my -= dely;
+            }
+
         }
 
         float newDX = mx/n - getX();
@@ -138,11 +143,12 @@ void Ant::computeSeparation() {
 
         setDX(getDX() - newDX);
         setDY(getDY() - newDY);
+
         normalize();
     }
 }
 
-void Ant::computeCohesion() {
+void Ant::computeCohesion(float weight) {
     if (!neighbors.empty()) {
         float mx = 0, my = 0;
         float n = neighbors.size();
@@ -157,6 +163,7 @@ void Ant::computeCohesion() {
 
         setDX(getDX() + newDX);
         setDY(getDY() + newDY);
+
         normalize();
     }
 }

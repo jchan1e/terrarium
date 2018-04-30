@@ -14,7 +14,7 @@ Map::Map(int W, int H, int seed) {
 }
 
 Map::Map(int W, int H) {
-  Width = W;
+  Width = W; //TODO Setters
   Height = H;
   heightmap = new float*[Width];
   for(int i=0; i < Width; ++i)
