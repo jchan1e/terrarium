@@ -178,18 +178,13 @@ void Map::generate() {
   }
 
   // Initialize tile grid
-  grid = new Tile*[Width];
+  grid = new std::vector<Tile>* ;
   for(int i=0; i < Width; ++i) {
-    grid[i] = new Tile[Height];
+    grid[i] = new std::vector<Tile>[Height];
     for(int j=0; j < Height; ++j) {
-      if (heightmap[i][j] > 0.0) {
-        grid[i][j] = Tile();
-      }
-      else {
-        grid[i][j] = Tile();
+        grid[i][j] = new std::vector<Tile>;
       }
     }
-  }
 
   for(int i=0; i < Width; ++i)
     delete delta[i];
