@@ -1,7 +1,7 @@
-#include "stdGL.h"
-
 #ifndef SHADER_H
 #define SHADER_H
+
+#include "stdGL.h"
 
 // this function stolen from 4229 class examples
 char* ReadText(char* file);

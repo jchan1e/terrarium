@@ -1,11 +1,12 @@
+#ifndef ANT_H
+#define ANT_H
+
 #include "map.h"
 #include "net.h"
 #include "genome.h"
 #include "objects.h"
 #include "renderable.h"
-
-#ifndef CREATURE_H
-#define CREATURE_H
+#include <cmath>
 
 class Ant : public Renderable
 {
@@ -19,8 +20,8 @@ public:
 
   float getX();
   float getY();
-  void setY(float y);
-  void setX(float x);
+  void setY(float Y);
+  void setX(float X);
   float getTheta();
   void setTheta(float th);
   bool isLocked();

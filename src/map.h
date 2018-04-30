@@ -1,12 +1,13 @@
+#ifndef MAP_H
+#define MAP_H
+
 #include "stdGL.h"
 #include "tile.h"
 #include "renderable.h"
 #include <cstdlib>
-#include "ant.h"
 #include <vector>
 
-#ifndef MAP_H
-#define MAP_H
+class Ant;
 
 class Map : public Renderable {
 public:
@@ -30,7 +31,7 @@ public:
 
   float getHeight(float x, float y);
   int getState(int x, int y);
-  void getNeighbors(float x, float y, float radius, std::vector<Ant*> neighbors);
+  void getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighbors);
   void addAnt(Ant*);
 };
 

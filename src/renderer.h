@@ -1,3 +1,6 @@
+#ifndef RENDERER_H
+#define RENDERER_H
+
 #include "stdGL.h"
 #include "shader.h"
 #include "renderable.h"
@@ -6,9 +9,6 @@
 #include <SDL.h>
 #include <SDL_opengl.h>
 #include <vector>
-
-#ifndef RENDERER_H
-#define RENDERER_H
 
 class Renderer {
 private:
