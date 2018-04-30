@@ -9,15 +9,21 @@
 
 class Map : public Renderable {
 public:
+
   int Width;
   int Height;
   std::vector<Tile>** grid;
+  std::vector<Ant*> ants;
   float** heightmap;
+
+  //Interface methods
   void render();
   void animate();
+
   Map(int W, int H, int seed);
   Map(int W, int H);
   ~Map();
+
   void generate();
   void generate(int seed);
 

@@ -238,7 +238,7 @@ void Map::render() {
       if (j < Height-1) {
         corners[1] = (corners[1]*n + heightmap[i][j+1]) / (n+1.0);
       }
-      
+
       corners[2] = heightmap[i][j];
       n = 1.0;
       if (i < Width-1 && j < Height-1) {
@@ -306,4 +306,19 @@ float Map::getHeight(float x, float y) {
 }
 
 int Map::getState(int x, int y) {
+}
+
+void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*> neighbors){
+  for (Ant* ant : ants) {
+      float difx = x - ant->getX();
+      float dify = y - ant->getY();
+      float dist = sqrt(difx*difx + dify*dify);
+      if ( dist <= radius && dist != 0 ) {
+          neighbors.push_back(ant);
+      }
+  }
+}
+
+void Map::addAnt(Ant* ant) {
+  ants.push_back(ant);
 }

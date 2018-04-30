@@ -49,7 +49,7 @@ public:
   // manage internal variables
   void reshape(int width, int height);
   void addObject(Renderable* object);
-  void addObject(Ant* ant);
+  
   //void removeNullObjects();
   void keyStateUpdate(const Uint8* state);
   int handleEvents();
