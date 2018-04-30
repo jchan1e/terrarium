@@ -1,4 +1,5 @@
 #include "renderer.h"
+
 using namespace std;
 
 Renderer::Renderer(){ //, SDL_GLContext* c) {
@@ -27,6 +28,12 @@ Renderer::Renderer(){ //, SDL_GLContext* c) {
 
 void Renderer::addObject(Renderable* object) {
   render_objects.push_back(object);
+}
+
+//what is this? a renderer for ants
+void Renderer::addObject(Ant* ant) {
+  render_objects.push_back(ant);
+  ants.push_back(ant);
 }
 
 void Renderer::reshape(int Width, int Height) {
@@ -238,4 +245,11 @@ void Renderer::setDph(float p) {
 
 void Renderer::Pause() {
   pause = !pause;
+}
+
+void Renderer::getNeighbors(float x, float y, float radius, std::vector<Ant*> neighbors){
+  for (Ant* ant : ants) {
+      float difx = x - ant->
+      if ())
+  }
 }

@@ -14,7 +14,11 @@ public:
   float theta;
   float speed;
   Map* m;
-
+  bool locked;
+  std::vector <Ant*> neighbors;
+  float getX();
+  float getY();
+  bool isLocked();
   Ant(float X, float Y, Map* M);
   ~Ant();
   void render();
@@ -22,6 +26,9 @@ public:
   void move(float velocity, float Th);
   float getTheta();
   void setTheta(float th);
+  void lock();
+  void unlock();
+  void getNeighbors();
 };
 
 #endif

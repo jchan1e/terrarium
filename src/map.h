@@ -2,6 +2,7 @@
 #include "tile.h"
 #include "renderable.h"
 #include <cstdlib>
+#include "ant.h"
 
 #ifndef MAP_H
 #define MAP_H
@@ -10,9 +11,8 @@ class Map : public Renderable {
 public:
   int Width;
   int Height;
-  Tile** grid;
+  std::vector<Tile>** grid;
   float** heightmap;
-
   void render();
   void animate();
   Map(int W, int H, int seed);
