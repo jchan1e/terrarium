@@ -14,7 +14,7 @@ public:
 
     //Members
     float x, y, z;
-    float theta;
+    float dx, dy;
     float speed;
     Map* m;
     bool locked;
@@ -27,17 +27,20 @@ public:
     //Getters
     float getX();
     float getY();
+    float getDX();
+    float getDY();
     float getZ();
-    float getV();
-    float getTheta();
+    float getSpeed();
     bool isLocked();
 
     //Setters
     void setX(float X);
     void setY(float Y);
+    void setDX(float DX);
+    void setDY(float DY);
+    void setRandomV();
     void setZ(float Z);
-    void setV(float V);
-    void setTheta(float th);
+    void setSpeed(float V);
     void lock();
     void unlock();
     void setMap(Map* M);
@@ -47,11 +50,14 @@ public:
     void animate();
 
     //Animate methods
-    void move(float velocity, float Th);
+    void move();
+
     void getNeighbors(float radius);
 
     //Boid-like behavior
     void computeAlignment();
+    void computeSeparation();
+    void computeCohesion();
 };
 
 #endif
