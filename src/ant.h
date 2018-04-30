@@ -18,12 +18,20 @@ public:
   //Genome g;
   //Net* net;
   Map* m;
-
+  bool locked;
+  std::vector <Ant*> neighbors;
+  float getX();
+  float getY();
+  bool isLocked();
   Ant(float X, float Y, Map* M);
   ~Ant();
   void render();
   void animate();
   void move(float velocity, float Th);
+  void lock();
+  void unlock();
+  void getNeighbors();
+
 };
 
 #endif
