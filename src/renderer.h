@@ -36,7 +36,6 @@ private:
 
   // objects to render
   std::vector<Renderable*> render_objects;
-  std::vector<Ant*> ants;
 
 public:
   // Constructor/Destructor
@@ -49,11 +48,10 @@ public:
   // manage internal variables
   void reshape(int width, int height);
   void addObject(Renderable* object);
-  
+
   //void removeNullObjects();
   void keyStateUpdate(const Uint8* state);
   int handleEvents();
-  void getNeighbors(float x, float y, float radius, std::vector<Ant*> neighbors);
   // generic gets and sets
   int getW();
   void setW(int width);

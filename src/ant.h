@@ -16,16 +16,23 @@ public:
   Map* m;
   bool locked;
   std::vector <Ant*> neighbors;
+
   float getX();
   float getY();
-  bool isLocked();
-  Ant(float X, float Y, Map* M);
-  ~Ant();
-  void render();
-  void animate();
-  void move(float velocity, float Th);
+  void setY();
+  void setX();
   float getTheta();
   void setTheta(float th);
+  bool isLocked();
+
+  Ant(float X, float Y, Map* M);
+  ~Ant();
+
+  //Interface methods
+  void render();
+  void animate();
+
+  void move(float velocity, float Th);
   void lock();
   void unlock();
   void getNeighbors();
