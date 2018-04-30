@@ -42,3 +42,11 @@ void Ant::move(float velocity, float Th) {
      x += velocity*cos(Th);
      y += velocity*sin(Th);
 }
+
+float Ant::getTheta() {
+  return theta;
+}
+
+void Ant::setTheta(float th) {
+  theta = fmod(th, 2.0*M_PI);
+}
