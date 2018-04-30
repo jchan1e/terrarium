@@ -30,6 +30,8 @@ public:
 
   float getHeight(float x, float y);
   int getState(int x, int y);
+  void getNeighbors(float x, float y, float radius, std::vector<Ant*> neighbors);
+  void addAnt(Ant*);
 };
 
 #endif
