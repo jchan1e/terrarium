@@ -1,7 +1,4 @@
 #include "ant.h"
-#include "net.h"
-#include "map.h"
-#include <cmath>
 #include "stdGL.h"
 
 using namespace std;

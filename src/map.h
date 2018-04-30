@@ -1,12 +1,13 @@
+#ifndef MAP_H
+#define MAP_H
+
 #include "stdGL.h"
 #include "tile.h"
 #include "renderable.h"
 #include <cstdlib>
-#include "ant.h"
 #include <vector>
 
-#ifndef MAP_H
-#define MAP_H
+class Ant;
 
 class Map : public Renderable {
 public:
