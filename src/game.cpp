@@ -277,9 +277,16 @@ int main(int argc, char *argv[])
   Map* M;
   M = new Map(16,16, 1729);
   R->addObject(M);
-  Ant* A;
-  A = new Ant(2,2, M);
-  R->addObject(A);
+
+  for (int i = 0; i < 20; i++) {
+      Ant* A;
+      float r1 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/M->getW()));
+      float r2 = static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/M->getH()));
+      A = new Ant(r1, r2, M);
+      R->addObject(A);
+      M->addAnt(A);
+  }
+
 
   //Timing
   int r = 0;

@@ -9,15 +9,21 @@ Ant::Ant(float X, float Y, Map* M) {
     setX(X);
     setY(Y);
     setZ(m->getHeight(x,y));
-    setSpeed(0.005);
-    setDX(1);
-    setDY(1);
+    setSpeed(0.01);
+    setDX(0);
+    setDY(0);
 }
 
 //Destructor
 Ant::~Ant() {
 }
 
+void Ant::normalize() {
+    float oldDX = getDX(), oldDY = getDY();
+    float length = sqrt(oldDX*oldDX + oldDY*oldDY);
+    setDX(oldDX/length);
+    setDY(oldDY/length);
+}
 
 //Getters
 float Ant::getX() { return x; }
@@ -36,6 +42,7 @@ void Ant::setDY(float DY) { dy = DY; }
 void Ant::setRandomV() { //sets dx, dy to random direction
     setDX((getDX() + -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2)))));
     setDY((getDY() + -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2)))));
+    normalize();
 }
 void Ant::setZ(float Z) { z = Z; }
 void Ant::setSpeed(float V) {speed = V; }
@@ -61,7 +68,7 @@ void Ant::render() {
 
 void Ant::animate() {
     // Update the state of this ant by one timestep
-    getNeighbors(10);
+    getNeighbors(2);
     if (!neighbors.empty()) {
         computeCohesion();
         computeAlignment();
@@ -78,14 +85,18 @@ void Ant::move() {
     float newx = getX() + getSpeed()*getDX();
     float newy = getY() + getSpeed()*getDY();
 
-    if (newx >= m->getW() || newx <= 0){
-        setX(m->getW()-newx);
-    } else setX(newx);
+    if (newx >= m->getW()) {
+        newx = 0;
+    } else if (newx <= 0) {
+        newx = m->getW();
+    } if (newy >= m->getH()) {
+        newy = 0;
+    } else if (newy <= 0) {
+        newy = m->getH();
+    }
 
-    if (newy >= m->getH() || newy <= 0){
-        setY(m->getH()-newy);
-    } else setY(newy);
-
+    setX(newx);
+    setY(newy);
     setZ(m->getHeight(getX(),getY()));
 }
 
@@ -108,22 +119,26 @@ void Ant::computeAlignment() {
 
         setDX(getDX() + newDX/n);
         setDY(getDY() + newDY/n);
+        normalize();
     }
 }
 
 void Ant::computeSeparation() {
     if (!neighbors.empty()) {
-        float newDX = 0;
-        float newDY = 0;
+        float mx = 0, my = 0;
         float n = neighbors.size();
 
         for (Ant* neighbor : neighbors) {
-            newDX += getX() - neighbor->getX();
-            newDY += getY() - neighbor->getY();
+            mx += getX() - neighbor->getX();
+            my += getY() - neighbor->getY();
         }
 
-        setDX(getDX() - newDX/n);
-        setDY(getDY() - newDY/n);
+        float newDX = mx/n - getX();
+        float newDY = my/n - getY();
+
+        setDX(getDX() - newDX);
+        setDY(getDY() - newDY);
+        normalize();
     }
 }
 
@@ -142,5 +157,6 @@ void Ant::computeCohesion() {
 
         setDX(getDX() + newDX);
         setDY(getDY() + newDY);
+        normalize();
     }
 }

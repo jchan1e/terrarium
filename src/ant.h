@@ -24,6 +24,9 @@ public:
     Ant(float X, float Y, Map* M);
     ~Ant();
 
+    //Helper function for direction
+    void normalize();
+    
     //Getters
     float getX();
     float getY();
