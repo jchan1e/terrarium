@@ -19,8 +19,8 @@ public:
 
   float getX();
   float getY();
-  void setY();
-  void setX();
+  void setY(float y);
+  void setX(float x);
   float getTheta();
   void setTheta(float th);
   bool isLocked();
@@ -35,7 +35,7 @@ public:
   void move(float velocity, float Th);
   void lock();
   void unlock();
-  void getNeighbors();
+  void getNeighbors(float radius);
 };
 
 #endif
