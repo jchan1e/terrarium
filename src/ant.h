@@ -24,10 +24,11 @@ public:
   void render();
   void animate();
   void move(float velocity, float Th);
+  float getTheta();
+  void setTheta(float th);
   void lock();
   void unlock();
   void getNeighbors();
-
 };
 
 #endif

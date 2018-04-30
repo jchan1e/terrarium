@@ -60,3 +60,11 @@ bool Ant::isLocked() { return locked; }
 Ant* getLockedNeighbors(float radius) {
     return m->getLockedNeighbors(x, y, radius); //Array of ant pointers
 }
+
+float Ant::getTheta() {
+  return theta;
+}
+
+void Ant::setTheta(float th) {
+  theta = fmod(th, 2.0*M_PI);
+}
