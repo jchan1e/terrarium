@@ -1,5 +1,6 @@
 #include "map.h"
 #include "objects.h"
+#include "ant.h"
 #include <iostream>
 
 Map::Map(int W, int H, int seed) {
@@ -297,16 +298,16 @@ float Map::getHeight(float x, float y) {
   return lerp(h0, h1, x-x0);
 }
 
-int Map::getState(int x, int y) {
-}
+//int Map::getState(int x, int y) {
+//}
 
-void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*> neighbors){
+void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighbors){
   for (Ant* ant : ants) {
       float difx = x - ant->getX();
       float dify = y - ant->getY();
       float dist = sqrt(difx*difx + dify*dify);
       if ( dist <= radius && dist != 0 ) {
-          neighbors.push_back(ant);
+          neighbors->push_back(ant);
       }
   }
 }

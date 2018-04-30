@@ -50,12 +50,13 @@ void Ant::unlock() {
 
 float Ant::getX() { return x; }
 float Ant::getY() { return y; }
-float Ant::setX(float X) { x = X; }
-float Ant::setY(float Y) { y = Y; }
+void Ant::setX(float X) { x = X; }
+void Ant::setY(float Y) { y = Y; }
 bool Ant::isLocked() { return locked; }
 
-Ant* getLockedNeighbors(float radius) {
-    return m->getLockedNeighbors(x, y, radius); //Array of ant pointers
+void Ant::getNeighbors(float radius) {
+  neighbors.clear();
+  m->getNeighbors(x, y, radius, &neighbors); //Array of ant pointers
 }
 
 float Ant::getTheta() {
