@@ -51,7 +51,7 @@ void Ant::setMap(Map* M) { m = M; }
 void Ant::render() {
     // transform size & location
     glPushMatrix();
-    glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, .25);
+    glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, z+.25);
     //glRotated(0, 0, 1, theta);
 
     octahedron(0,0,0, 0, 0.25);
@@ -69,8 +69,8 @@ void Ant::animate() {
     neighborStopProb(1, 10);
     if(!isLocked()){
         if (!neighbors.empty()) {
-            computeCohesion(1);
-            computeAlignment(.10);
+            computeCohesion(.1);
+            computeAlignment(2);
             computeSeparation(.5, 3);
             setRandomV(.5);
         } else {
@@ -78,13 +78,8 @@ void Ant::animate() {
         }
 
     }
-<<<<<<< HEAD
     randomGoProb(10);
-
-=======
-    randomGoProb(10);  
     neighborGoProb(1,10);
->>>>>>> ecd8b308539a213d5f7fb3db94140de5f655bde6
     move();
 }
 
@@ -105,7 +100,7 @@ void Ant::move() {
     }
     setX(newx);
     setY(newy);
-    //setZ(m->getHeight(getX(),getY()));
+    setZ(m->getHeight(getX(),getY()));
 }
 
 void Ant::getNeighbors(float radius) {
@@ -116,8 +111,7 @@ void Ant::getNeighbors(float radius) {
 //Boids stuff
 void Ant::computeAlignment(float weight) {
     if (!neighbors.empty()) {
-        float newDX = 0;
-        float newDY = 0;
+        float newDX = 0, newDY = 0;
         float n = neighbors.size();
 
         for (Ant* neighbor : neighbors) {
@@ -141,14 +135,14 @@ void Ant::computeSeparation(float radius, float weight) {
             float delx = neighbor->getX() - getX();
             float dely = neighbor->getY() - getY();
             if (sqrt(delx*delx + dely*dely) < radius) {
-                mx -= delx;
-                my -= dely;
+                mx += delx;
+                my += dely;
             }
 
         }
 
-        float newDX = mx/n - getX();
-        float newDY = my/n - getY();
+        float newDX = mx/n;
+        float newDY = my/n;
 
         setDX(getDX() - weight * newDX);
         setDY(getDY() - weight * newDY);
@@ -189,42 +183,6 @@ void Ant::setRandomV(float noise) { //sets dx, dy to random direction
     normalize();
 }
 
-<<<<<<< HEAD
-void Ant::setStop(){
-    setDY(0);
-    setDX(0);
-}
-
-void Ant::randomStopProb(int prob1){
-    int rNum = rand() % prob1;
-    if(rNum == 1){
-        setStop();
-        lock();
-    }
-}
-
-void Ant::randomGoProb(int prob2){
-    int rNum = rand() % prob2;
-    if(rNum == 1){
-        unlock();
-    }
-}
-
-void Ant::neighborStopProb(float weight, int prob){
-    int count = 0;
-    if(!neighbors.empty()){
-        for(Ant* neighbor : neighbors){
-            if(neighbor->isLocked()){
-                count++;
-            }
-        }
-        int rNum = rand() % prob;
-        int var = count*weight;
-        if(var >= rNum){
-            setStop();
-            lock();
-        }
-=======
 void Ant::setStop(){//sets ant tangential movement to zero
   setDY(0);
   setDX(0);
@@ -258,12 +216,12 @@ void Ant::neighborStopProb(float weight, int prob){//stopping of ants based on i
     if(var >= rNum){
       setStop();
       lock();
->>>>>>> ecd8b308539a213d5f7fb3db94140de5f655bde6
     }
 
+    }
 }
 
-void Ant::neighborGoProb(float weight, int prob){//unlocking of stopped ants based on neighbor ants who are also unlocked
+void Ant::neighborGoProb(float weight, int prob) { //unlocking of stopped ants based on neighbor ants who are also unlocked
   int count = 0;
   if(!neighbors.empty()){
     for(Ant* neighbor : neighbors){
