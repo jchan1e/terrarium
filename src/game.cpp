@@ -283,7 +283,7 @@ int main(int argc, char *argv[])
   R->addObject(M);
   Ant* A;
 
-  for (int i = 0; i < 100; i++) {
+  for (int i = 0; i < 500; i++) {
       // float r1 = -(M->getH()/2) + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(2*(M->getH()/2))));
       // float r2 = -(M->getW()/2) + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(2*(M->getW()/2))));
       float r1 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getH()-3))));
