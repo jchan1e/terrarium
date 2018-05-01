@@ -279,7 +279,7 @@ int main(int argc, char *argv[])
   R->reshape(1920,1080);
 
   Map* M;
-  M = new Map(16,16, 1729);
+  M = new Map(48,48, 1729);
   R->addObject(M);
   Ant* A;
 

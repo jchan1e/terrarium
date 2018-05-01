@@ -20,7 +20,7 @@ private:
   int h = 1080;
 
   // eye postion
-  float zoom = 9.0;
+  float zoom = 30.0;
   float dzoom = 0;
   float th =  0;
   float ph = 45;

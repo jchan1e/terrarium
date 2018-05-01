@@ -53,6 +53,7 @@ void Ant::render() {
     glPushMatrix();
     glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, z+.25);
     //glRotated(0, 0, 1, theta);
+    glScalef(2.0,2.0,2.0);
 
     if(isLocked())
       glColor3f(0.5,0.5,0.5);
