@@ -11,32 +11,57 @@
 class Ant : public Renderable
 {
 public:
-  float x, y, z;
-  float theta;
-  float speed;
-  Map* m;
-  bool locked;
-  std::vector <Ant*> neighbors;
 
-  float getX();
-  float getY();
-  void setY(float Y);
-  void setX(float X);
-  float getTheta();
-  void setTheta(float th);
-  bool isLocked();
+    //Members
+    float x, y, z;
+    float dx, dy;
+    float speed;
+    Map* m;
+    bool locked;
+    std::vector <Ant*> neighbors;
 
-  Ant(float X, float Y, Map* M);
-  ~Ant();
+    //Con/Destructor
+    Ant(float X, float Y, Map* M);
+    ~Ant();
 
-  //Interface methods
-  void render();
-  void animate();
+    //Helper function for direction
+    void normalize();
 
-  void move(float velocity, float Th);
-  void lock();
-  void unlock();
-  void getNeighbors(float radius);
+    //Getters
+    float getX();
+    float getY();
+    float getDX();
+    float getDY();
+    float getZ();
+    float getSpeed();
+    bool isLocked();
+
+    //Setters
+    void setX(float X);
+    void setY(float Y);
+    void setDX(float DX);
+    void setDY(float DY);
+    void setRandomV();
+    void setRandomV(float noise);
+    void setZ(float Z);
+    void setSpeed(float V);
+    void lock();
+    void unlock();
+    void setMap(Map* M);
+
+    //Interface methods
+    void render();
+    void animate();
+
+    //Animate methods
+    void move();
+
+    void getNeighbors(float radius);
+
+    //Boid-like behavior
+    void computeAlignment(float weight);
+    void computeSeparation(float radius, float weight);
+    void computeCohesion(float weight);
 };
 
 #endif

@@ -28,7 +28,8 @@ public:
 
   void generate();
   void generate(int seed);
-
+  int getW();
+  int getH();
   float getHeight(float x, float y);
   int getState(int x, int y);
   void getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighbors);

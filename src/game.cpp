@@ -1,6 +1,8 @@
 #include "stdGL.h"
 #include <vector>
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 // For database connection:
 //#include <mysql_connection.h>
 //#include <cppconn/driver.h>
@@ -271,6 +273,8 @@ int main(int argc, char *argv[])
     return 1;
   }
 
+  srand (static_cast <unsigned> (time(0)));
+
   Renderer* R = new Renderer();
   R->reshape(1920,1080);
 
@@ -278,8 +282,17 @@ int main(int argc, char *argv[])
   M = new Map(16,16, 1729);
   R->addObject(M);
   Ant* A;
-  A = new Ant(2,2, M);
-  R->addObject(A);
+
+  for (int i = 0; i < 50; i++) {
+      // float r1 = -(M->getH()/2) + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(2*(M->getH()/2))));
+      // float r2 = -(M->getW()/2) + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/(2*(M->getW()/2))));
+      float r1 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getH()-3))));
+      float r2 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getW()-3))));
+      A = new Ant(r1, r2, M);
+      R->addObject(A);
+      M->addAnt(A);
+  }
+
 
   //Timing
   int r = 0;
