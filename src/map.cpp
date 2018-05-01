@@ -32,14 +32,15 @@ Map::~Map() {
 }
 
 void Map::generate() {
-    // generates Perlin Noise to fill grid
-
     for (int i=0; i < Width; ++i) {
         for (int j=0; j < Height; ++j) {
             heightmap[i][j] = 0.0;
         }
     }
     return;
+
+///////////////////////////////////////////
+    // generates Perlin Noise to fill grid
 
     // Initialize and set all values to 0.0
     float ** delta = new float*[Width];
@@ -276,12 +277,18 @@ void Map::render() {
             glColor3f(0.5,0.6,0.6);
             glBegin(GL_TRIANGLE_FAN);
             glNormal3f(normx, normy, normz);
-            glVertex3f(i+centerw,     j+centerh,     centerd);
-            glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
-            glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
-            glVertex3f(i+centerw+0.5, j+centerh+0.5, corners[2]);
-            glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);
-            glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
+            glVertex3f(i+centerw,     j+centerh,     0.0);
+            glVertex3f(i+centerw-0.5, j+centerh-0.5, 0.0);
+            glVertex3f(i+centerw+0.5, j+centerh-0.5, 0.0);
+            glVertex3f(i+centerw+0.5, j+centerh+0.5, 0.0);
+            glVertex3f(i+centerw-0.5, j+centerh+0.5, 0.0);
+            glVertex3f(i+centerw-0.5, j+centerh-0.5, 0.0);
+            //glVertex3f(i+centerw,     j+centerh,     centerd);
+            //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
+            //glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
+            //glVertex3f(i+centerw+0.5, j+centerh+0.5, corners[2]);
+            //glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);
+            //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
             glEnd();
             //std::cout << i+centerw << " " << j+centerh << std::endl;
         }
