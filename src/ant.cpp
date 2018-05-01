@@ -51,7 +51,7 @@ void Ant::setMap(Map* M) { m = M; }
 void Ant::render() {
     // transform size & location
     glPushMatrix();
-    glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, 2);
+    glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, .25);
     //glRotated(0, 0, 1, theta);
 
     octahedron(0,0,0, 0, 0.25);
@@ -68,18 +68,18 @@ void Ant::animate() {
     randomStopProb(100);
     neighborStopProb(1, 10);
     if(!isLocked()){
-      if (!neighbors.empty()) {
-        computeCohesion(1);
-        computeAlignment(.10);
-        computeSeparation(.5, 3);
-        setRandomV(.5);
-    } else {
-        setRandomV();
-    }
+        if (!neighbors.empty()) {
+            computeCohesion(1);
+            computeAlignment(.10);
+            computeSeparation(.5, 3);
+            setRandomV(.5);
+        } else {
+            setRandomV();
+        }
 
     }
     randomGoProb(10);
-    
+
     move();
 }
 
@@ -185,40 +185,40 @@ void Ant::setRandomV(float noise) { //sets dx, dy to random direction
 }
 
 void Ant::setStop(){
-  setDY(0);
-  setDX(0);
+    setDY(0);
+    setDX(0);
 }
 
 void Ant::randomStopProb(int prob1){
-  int rNum = rand() % prob1;
-  if(rNum == 1){
-    setStop();
-    lock();
-  }
+    int rNum = rand() % prob1;
+    if(rNum == 1){
+        setStop();
+        lock();
+    }
 }
 
 void Ant::randomGoProb(int prob2){
-  int rNum = rand() % prob2;
-  if(rNum == 1){
-    unlock();
-  }
+    int rNum = rand() % prob2;
+    if(rNum == 1){
+        unlock();
+    }
 }
 
 void Ant::neighborStopProb(float weight, int prob){
-  int count = 0;
-  if(!neighbors.empty()){
-    for(Ant* neighbor : neighbors){
-      if(neighbor->isLocked()){
-        count++;
-      }
+    int count = 0;
+    if(!neighbors.empty()){
+        for(Ant* neighbor : neighbors){
+            if(neighbor->isLocked()){
+                count++;
+            }
+        }
+        int rNum = rand() % prob;
+        int var = count*weight;
+        if(var >= rNum){
+            setStop();
+            lock();
+        }
     }
-    int rNum = rand() % prob;
-    int var = count*weight;
-    if(var >= rNum){
-      setStop();
-      lock();
-    }
-  }
 
 }
 
