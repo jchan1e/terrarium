@@ -9,7 +9,7 @@ Ant::Ant(float X, float Y, Map* M) {
     setX(X);
     setY(Y);
     setZ(m->getHeight(x,y));
-    setSpeed(0.25);
+    setSpeed(0.10);
     setDX(-1);
     setDY(-1);
 
@@ -73,10 +73,10 @@ void Ant::animate() {
     neighborStopProb(1, 10);
     if(!isLocked()){
         if (!neighbors.empty()) {
-            computeCohesion(1);
-            computeAlignment(1);
+            computeCohesion(.1);
+            computeAlignment(2);
             computeSeparation(2.5, 1);
-            setRandomV();
+            setRandomV(.25);
         } else {
             setRandomV();
         }
