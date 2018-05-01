@@ -329,6 +329,9 @@ int main(int argc, char *argv[])
   cout << "Shutting Down\n";
   cout << "average framerate: " << 1000*(float)frames/(r - startuptime) << endl;
 
+  delete R;
+  delete M;
+  delete A;
 
   SDL_Quit();
 
