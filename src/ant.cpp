@@ -54,8 +54,11 @@ void Ant::render() {
     glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, z+.25);
     //glRotated(0, 0, 1, theta);
 
+    if(isLocked())
+      glColor3f(0.5,0.5,0.5);
+    else
+      glColor3f(0.4,0.7,0.7);
     octahedron(0,0,0, 0, 0.25);
-    //and other stuff
 
     //glTranslatef(cos(theta), sin(theta), 0);
     ////circle(m_radius)
