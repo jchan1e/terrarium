@@ -34,6 +34,13 @@ Map::~Map() {
 void Map::generate() {
   // generates Perlin Noise to fill grid
 
+  for (int i=0; i < Width; ++i) {
+    for (int j=0; j < Height; ++j) {
+      heightmap[i][j] = 0.0;
+    }
+  }
+  return;
+
   // Initialize and set all values to 0.0
   float ** delta = new float*[Width];
   for(int i=0; i < Width; ++i) {
