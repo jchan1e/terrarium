@@ -65,7 +65,10 @@ void Ant::render() {
 void Ant::animate() {
     // Update the state of this ant by one timestep
     getNeighbors(1);
-    if (!neighbors.empty()) {
+    randomStopProb(100);
+    neighborStopProb(1, 10);
+    if(!isLocked()){
+      if (!neighbors.empty()) {
         computeCohesion(1);
         computeAlignment(.10);
         computeSeparation(.5, 3);
@@ -73,6 +76,10 @@ void Ant::animate() {
     } else {
         setRandomV();
     }
+
+    }
+    randomGoProb(10);
+    
     move();
 }
 
@@ -175,4 +182,46 @@ void Ant::setRandomV(float noise) { //sets dx, dy to random direction
     setDX((getDX() + -noise + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2*noise)))));
     setDY((getDY() + -noise + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2*noise)))));
     normalize();
+}
+
+void Ant::setStop(){
+  setDY(0);
+  setDX(0);
+}
+
+void Ant::randomStopProb(int prob1){
+  int rNum = rand() % prob1;
+  if(rNum == 1){
+    setStop();
+    lock();
+  }
+}
+
+void Ant::randomGoProb(int prob2){
+  int rNum = rand() % prob2;
+  if(rNum == 1){
+    unlock();
+  }
+}
+
+void Ant::neighborStopProb(float weight, int prob){
+  int count = 0;
+  if(!neighbors.empty()){
+    for(Ant* neighbor : neighbors){
+      if(neighbor->isLocked()){
+        count++;
+      }
+    }
+    int rNum = rand() % prob;
+    int var = count*weight;
+    if(var >= rNum){
+      setStop();
+      lock();
+    }
+  }
+
+}
+
+void Ant::neighborGoProb(){
+
 }

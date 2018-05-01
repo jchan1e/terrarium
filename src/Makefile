@@ -16,8 +16,8 @@ GLIBS=-lGLU -lGL -lm $(shell sdl2-config --libs)
 CLEAN=rm -rf run Test *.o *.a
 endif
 #endif
-#CFLG=-g -O3 -Wall -std=c++11
-CFLG=-g -Wall -std=c++11
+CFLG=-g -O3 -Wall -std=c++11
+#CFLG=-g -Wall -std=c++11
 
 compile:run
 

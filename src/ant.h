@@ -58,10 +58,18 @@ public:
 
     void getNeighbors(float radius);
 
+
     //Boid-like behavior
     void computeAlignment(float weight);
     void computeSeparation(float radius, float weight);
     void computeCohesion(float weight);
+
+    //More Ant behavior
+    void randomStopProb(int prob1);
+    void setStop();
+    void randomGoProb(int prob2);
+    void neighborStopProb(float weight, int prob);
+    void neighborGoProb();
 };
 
 #endif
