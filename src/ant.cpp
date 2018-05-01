@@ -56,7 +56,7 @@ void Ant::setMap(Map* M) { m = M; }
 void Ant::render() {
     // transform size & location
     glPushMatrix();
-    glTranslated(x, y, z);
+    glTranslated(getX()-m->getH()/2-1, getY()-m->getW()/2-1, getZ()+.3);
     //glRotated(0, 0, 1, theta);
 
     octahedron(0,0,0, 0, 0.25);
@@ -69,7 +69,7 @@ void Ant::render() {
 
 void Ant::animate() {
     // Update the state of this ant by one timestep
-    getNeighbors(6);
+    getNeighbors(3);
     if (!neighbors.empty()) {
         computeCohesion(0);
         computeAlignment(0);
@@ -86,13 +86,16 @@ void Ant::move() {
     float newx = getX() + getSpeed()*getDX();
     float newy = getY() + getSpeed()*getDY();
 
-    if (newx >= m->getH() || newx <= 0){
-        setDX(-getDX());
-        newx = getX() + getSpeed()*getDX();
-    } if (newy >= m->getW() || newy <= 0){
-        setDY(-getDY());
-        newy = getY() + getSpeed()*getDY();
+    if (newx >= m->getH()) {
+        newx = 1;
+    } else if (newx <= 0){
+        newx = m->getH()-1;
+    }
 
+    if (newy >= m->getW()) {
+        newy = 1;
+    } else if (newy <= 0){
+        newy = m->getH()-1;
     }
     setX(newx);
     setY(newy);
