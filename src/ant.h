@@ -42,6 +42,7 @@ public:
     void setDX(float DX);
     void setDY(float DY);
     void setRandomV();
+    void setRandomV(float noise);
     void setZ(float Z);
     void setSpeed(float V);
     void lock();

@@ -10,8 +10,8 @@ Ant::Ant(float X, float Y, Map* M) {
     setY(Y);
     setZ(m->getHeight(x,y));
     setSpeed(0.05);
-    setDX(0);
-    setDY(0);
+    setDX(-1);
+    setDY(-1);
 
 }
 
@@ -40,11 +40,6 @@ void Ant::setX(float X) { x = X; }
 void Ant::setY(float Y) { y = Y; }
 void Ant::setDX(float DX) { dx = DX; }
 void Ant::setDY(float DY) { dy = DY; }
-void Ant::setRandomV() { //sets dx, dy to random direction
-    setDX((getDX() + -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2)))));
-    setDY((getDY() + -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2)))));
-    normalize();
-}
 void Ant::setZ(float Z) { z = Z; }
 void Ant::setSpeed(float V) { speed = V; }
 void Ant::lock() { locked = true; }
@@ -56,7 +51,7 @@ void Ant::setMap(Map* M) { m = M; }
 void Ant::render() {
     // transform size & location
     glPushMatrix();
-    glTranslated(getX()-m->getH()/2-1, getY()-m->getW()/2-1, getZ()+.3);
+    glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, 2);
     //glRotated(0, 0, 1, theta);
 
     octahedron(0,0,0, 0, 0.25);
@@ -69,11 +64,12 @@ void Ant::render() {
 
 void Ant::animate() {
     // Update the state of this ant by one timestep
-    getNeighbors(3);
+    getNeighbors(1);
     if (!neighbors.empty()) {
-        computeCohesion(0);
-        computeAlignment(0);
-        computeSeparation(1, 0);
+        computeCohesion(1);
+        computeAlignment(.10);
+        computeSeparation(.5, 3);
+        setRandomV(.5);
     } else {
         setRandomV();
     }
@@ -86,20 +82,18 @@ void Ant::move() {
     float newx = getX() + getSpeed()*getDX();
     float newy = getY() + getSpeed()*getDY();
 
-    if (newx >= m->getH()) {
-        newx = 1;
-    } else if (newx <= 0){
+    if (newx <= 1) {
         newx = m->getH()-1;
-    }
-
-    if (newy >= m->getW()) {
+    } else if (newx >= m->getH() - 1 ) {
+        newx = 1;
+    } if (newy <= 1) {
+        newy = m->getW()-1;
+    } else if (newy >= m->getW() - 1 ) {
         newy = 1;
-    } else if (newy <= 0){
-        newy = m->getH()-1;
     }
     setX(newx);
     setY(newy);
-    setZ(m->getHeight(getX(),getY()));
+    //setZ(m->getHeight(getX(),getY()));
 }
 
 void Ant::getNeighbors(float radius) {
@@ -119,8 +113,8 @@ void Ant::computeAlignment(float weight) {
             newDY += neighbor->getDY();
         }
 
-        setDX(getDX() + newDX/n);
-        setDY(getDY() + newDY/n);
+        setDX(getDX() + weight * newDX/n);
+        setDY(getDY() + weight * newDY/n);
 
         normalize();
     }
@@ -144,8 +138,8 @@ void Ant::computeSeparation(float radius, float weight) {
         float newDX = mx/n - getX();
         float newDY = my/n - getY();
 
-        setDX(getDX() - newDX);
-        setDY(getDY() - newDY);
+        setDX(getDX() - weight * newDX);
+        setDY(getDY() - weight * newDY);
 
         normalize();
     }
@@ -164,9 +158,21 @@ void Ant::computeCohesion(float weight) {
         float newDX = mx/n - getX();
         float newDY = my/n - getY();
 
-        setDX(getDX() + newDX);
-        setDY(getDY() + newDY);
+        setDX(getDX() + weight * newDX);
+        setDY(getDY() + weight * newDY);
 
         normalize();
     }
+}
+
+void Ant::setRandomV() { //sets dx, dy to random direction
+    setDX((getDX() + -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2)))));
+    setDY((getDY() + -1 + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2)))));
+    normalize();
+}
+
+void Ant::setRandomV(float noise) { //sets dx, dy to random direction
+    setDX((getDX() + -noise + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2*noise)))));
+    setDY((getDY() + -noise + static_cast <float> (rand()) /( static_cast <float> (RAND_MAX/(2*noise)))));
+    normalize();
 }
