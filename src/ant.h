@@ -69,7 +69,7 @@ public:
     void setStop();
     void randomGoProb(int prob2);
     void neighborStopProb(float weight, int prob);
-    void neighborGoProb();
+    void neighborGoProb(float weight, int prob);
 };
 
 #endif

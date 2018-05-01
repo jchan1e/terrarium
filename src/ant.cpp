@@ -78,8 +78,13 @@ void Ant::animate() {
         }
 
     }
+<<<<<<< HEAD
     randomGoProb(10);
 
+=======
+    randomGoProb(10);  
+    neighborGoProb(1,10);
+>>>>>>> ecd8b308539a213d5f7fb3db94140de5f655bde6
     move();
 }
 
@@ -184,6 +189,7 @@ void Ant::setRandomV(float noise) { //sets dx, dy to random direction
     normalize();
 }
 
+<<<<<<< HEAD
 void Ant::setStop(){
     setDY(0);
     setDX(0);
@@ -218,10 +224,58 @@ void Ant::neighborStopProb(float weight, int prob){
             setStop();
             lock();
         }
+=======
+void Ant::setStop(){//sets ant tangential movement to zero
+  setDY(0);
+  setDX(0);
+}
+
+void Ant::randomStopProb(int prob1){//random stopping of an ant
+  int rNum = rand() % prob1;
+  if(rNum == 1){
+    setStop();
+    lock();//boolean for locking position of ants
+  }
+}
+
+void Ant::randomGoProb(int prob2){//random unlock of ant
+  int rNum = rand() % prob2;
+  if(rNum == 1){
+    unlock();
+  }
+}
+
+void Ant::neighborStopProb(float weight, int prob){//stopping of ants based on if neighbors are stopped or not
+  int count = 0;
+  if(!neighbors.empty()){
+    for(Ant* neighbor : neighbors){
+      if(neighbor->isLocked()){
+        count++;
+      }
+    }
+    int rNum = rand() % prob;
+    int var = count*weight;
+    if(var >= rNum){
+      setStop();
+      lock();
+>>>>>>> ecd8b308539a213d5f7fb3db94140de5f655bde6
     }
 
 }
 
-void Ant::neighborGoProb(){
+void Ant::neighborGoProb(float weight, int prob){//unlocking of stopped ants based on neighbor ants who are also unlocked
+  int count = 0;
+  if(!neighbors.empty()){
+    for(Ant* neighbor : neighbors){
+      if(!neighbor->isLocked()){
+        count++;
+      }
+    }
+    int rNum = rand() % prob;
+    int var = count*weight;
+    if(var>=rNum){
+      unlock();
+    }
 
+  }
 }
