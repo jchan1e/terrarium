@@ -40,6 +40,7 @@ private:
 public:
   // Constructor/Destructor
   Renderer();//, SDL_GLContext* context);
+  ~Renderer();
 
   // update and render
   void physics();

@@ -26,6 +26,11 @@ Renderer::Renderer(){ //, SDL_GLContext* c) {
   //cout << depth_size << endl;
 }
 
+Renderer::~Renderer(){
+  for (Renderable* object : render_objects)
+    delete object;
+}
+
 void Renderer::addObject(Renderable* object) {
   render_objects.push_back(object);
 }
