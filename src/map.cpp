@@ -184,8 +184,8 @@ void Map::generate() {
     grid[i] = new std::vector<Tile>[Height];
   }
 
-  for(int i=0; i < Width; ++i)
-    delete delta[i];
+  //for(int i=0; i < Width; ++i)
+  //  delete delta[i];
   delete[] delta;
 }
 
