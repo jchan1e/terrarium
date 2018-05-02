@@ -9,7 +9,7 @@ Ant::Ant(float X, float Y, Map* M) {
     setX(X);
     setY(Y);
     setZ(getElevation());
-    setSpeed(0.01);
+    setSpeed(0.05);
     setDX(0);
     setDY(0);
     setSize(.25);
@@ -117,12 +117,12 @@ void Ant::move() {
     } else {
         newz = getElevation(newx, newy);
     }
-    if (newz - getZ() <= 1*getSize()) {
+    if (newz - getZ() <= 2*getSize()) {
         setX(newx);
         setY(newy);
         setZ(newz);
     } else {
-        neighborStopProb(1, 10);
+        neighborStopProb(.1, 10);
     }
 
 }
@@ -247,18 +247,11 @@ void Ant::neighborStopProb(float weight, int prob){//stopping of ants based on i
 }
 
 void Ant::neighborGoProb(float weight, int prob) { //unlocking of stopped ants based on neighbor ants who are also unlocked
-  int count = 0;
-  if(!neighbors.empty()){
-    for(Ant* neighbor : neighbors){
-      if(!neighbor->isLocked()){
-        count++;
-      }
-    }
+    int count = neighbors.size();
     int rNum = rand() % prob;
     int var = count*weight;
-    if(var>=rNum){
+    if(var<=rNum){
       setTile(getSize(), false);
     }
 
   }
-}
