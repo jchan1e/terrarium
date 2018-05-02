@@ -114,13 +114,14 @@ void Map::render() {
             float normz = 1.0;
             glColor3f(0.5,0.6,0.6);
             glBegin(GL_TRIANGLE_FAN);
-            glNormal3f(normx, normy, normz);
+            glNormal3f(0.0, 0.0, 1.0);
             glVertex3f(i+centerw,     j+centerh,     0.0);
             glVertex3f(i+centerw-0.5, j+centerh-0.5, 0.0);
             glVertex3f(i+centerw+0.5, j+centerh-0.5, 0.0);
             glVertex3f(i+centerw+0.5, j+centerh+0.5, 0.0);
             glVertex3f(i+centerw-0.5, j+centerh+0.5, 0.0);
             glVertex3f(i+centerw-0.5, j+centerh-0.5, 0.0);
+            //glNormal3f(normx, normy, normz);
             //glVertex3f(i+centerw,     j+centerh,     centerd);
             //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
             //glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
@@ -145,8 +146,7 @@ int Map::getH() { return Height; }
 int Map::getW() { return Width; }
 
 float Map::getElevation(float x, float y) {
-    if (x < 0 || y < 0 || x >= getW()-1 || y >= getH()-1)
-    return 0.0;
+    if (x < 0 || y < 0 || x >= getW()-2 || y >= getH()-2) return 0.0;
     int x0 = floor(x);
     int y0 = floor(y);
     int x1 = ceil(x);
