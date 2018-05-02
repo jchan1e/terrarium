@@ -146,8 +146,7 @@ int Map::getH() { return Height; }
 int Map::getW() { return Width; }
 
 float Map::getElevation(float x, float y) {
-    if (x < 0 || y < 0 || x >= getW()-1 || y >= getH()-1)
-    return 0.0;
+    if (x < 0 || y < 0 || x >= getW()-2 || y >= getH()-2) return 0.0;
     int x0 = floor(x);
     int y0 = floor(y);
     int x1 = ceil(x);
