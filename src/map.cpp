@@ -270,7 +270,7 @@ void Map::render() {
 
             float centerw = -Width/2;
             float centerh = -Height/2;
-            float centerd = (corners[0]+corners[1]+corners[2]+corners[3])/4;
+            //float centerd = (corners[0]+corners[1]+corners[2]+corners[3])/4;
             float normx = (corners[0]+corners[1]-corners[2]-corners[3])/4;
             float normy = (corners[0]-corners[1]-corners[2]+corners[3])/4;
             float normz = 1.0;
@@ -348,7 +348,7 @@ void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighb
         } if (left && ant->getY() < radius - leftRight) {
             dify = leftRight + ant->getY();
         } else if (right && w - ant->getY() < radius - leftRight) {
-            dify = topBottom + w - ant->getY();
+            dify = leftRight + w - ant->getY();
         } else {
             dify = y - ant->getY();
         }
