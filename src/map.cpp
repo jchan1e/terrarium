@@ -3,275 +3,111 @@
 #include "ant.h"
 #include <iostream>
 
-Map::Map(int W, int H, int seed) {
-    srand(seed);
-    Width = W;
-    Height = H;
-    heightmap = new float*[Width];
-    for(int i=0; i < Width; ++i)
-    heightmap[i] = new float[Height];
-    grid = new std::vector<Tile>*[Width];
-    for (int i = 0; i < Width; ++i)
-        grid[i] = new std::vector<Tile>[Height];
-    generate();
-}
 
+//Ctor and helper
 Map::Map(int W, int H) {
-    Width = W; //TODO Setters
-    Height = H;
-    heightmap = new float*[Width];
-    for(int i=0; i < Width; ++i)
-        heightmap[i] = new float[Height];
-    grid = new std::vector<Tile>*[Width];
-    for (int i = 0; i < Width; ++i)
-        grid[i] = new std::vector<Tile>[Height];
+    setW(W);
+    setH(H);
+    elevationmap = new float*[getW()];
+    for(int i=0; i < getW(); ++i)
+        elevationmap[i] = new float[getH()];
+    grid = new std::vector<Ant*>*[getW()];
+    for (int i = 0; i < getW(); ++i)
+        grid[i] = new std::vector<Ant*>[getH()];
     generate();
-}
-
-Map::~Map() {
-    for(int i=0; i < Width; ++i) {
-        delete heightmap[i];
-        delete grid[i];
-    }
-    delete[] heightmap;
-    delete[] grid;
 }
 
 void Map::generate() {
-    for (int i=0; i < Width; ++i) {
-        for (int j=0; j < Height; ++j) {
-            heightmap[i][j] = 0.0;
+    for (int i=0; i < getW(); ++i) {
+        for (int j=0; j < getH(); ++j) {
+            elevationmap[i][j] = 0.0;
         }
     }
     return;
-
-///////////////////////////////////////////
-    // generates Perlin Noise to fill grid
-
-    // Initialize and set all values to 0.0
-    float ** delta = new float*[Width];
-    for(int i=0; i < Width; ++i) {
-        delta[i] = new float[Height];
-        for(int j=0; j < Height; ++j) {
-            heightmap[i][j]= 0.0;
-            delta[i][j] = 0.0;
-        }
-    }
-
-    // Generate 16-scale noise
-    for(int i=0; i < Width; i += 16) {
-        for(int j=0; j < Height; j += 16) {
-            delta[i][j] = (float)rand()/RAND_MAX - 0.5;
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            int li = 16*(i/16);
-            int hi = li+16;
-            int lj = 16*(j/16);
-            int hj = lj+16;
-            float LL = delta[li][lj];
-            float LH = 0.0;
-            float HL = 0.0;
-            float HH = 0.0;
-            if (hj < Height)
-            LH = delta[li][hj];
-            if (hi < Width)
-            HL = delta[hi][lj];
-            if (hi < Width && hj < Height)
-            HH = delta[hi][hj];
-            // lerp
-            float M1    = LL + (i-li)/16.0 * (LH-LL);
-            float M2    = HL + (i-li)/16.0 * (HH-HL);
-            delta[i][j] = M1 + (j-lj)/16.0 * (M2-M1);
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            heightmap[i][j] += delta[i][j];
-        }
-    }
-
-    // Generate 8-scale noise
-    for(int i=0; i < Width; i += 8) {
-        for(int j=0; j < Height; j += 8) {
-            delta[i][j] = ((float)rand()/RAND_MAX - 0.5)/2.0;
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            int li = 8*(i/8);
-            int hi = li+8;
-            int lj = 8*(j/8);
-            int hj = lj+8;
-            float LL = delta[li][lj];
-            float LH = 0.0;
-            float HL = 0.0;
-            float HH = 0.0;
-            if (hj < Height)
-            LH = delta[li][hj];
-            if (hi < Width)
-            HL = delta[hi][lj];
-            if (hi < Width && hj < Height)
-            HH = delta[hi][hj];
-            float M1 = LL + (i%8)/(float)8 * (LH-LL);
-            float M2 = HL + (i%8)/(float)8 * (HH-HL);
-            delta[i][j] = M1 + (j%8)/(float)8 * (M2-M1);
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            heightmap[i][j] += delta[i][j];
-        }
-    }
-
-    // Generate 4-scale noise
-    for(int i=0; i < Width; i += 4) {
-        for(int j=0; j < Height; j += 4) {
-            delta[i][j] = ((float)rand()/RAND_MAX - 0.5)/4.0;
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            int li = 4*(i/4);
-            int hi = li+4;
-            int lj = 4*(j/4);
-            int hj = lj+4;
-            float LL = delta[li][lj];
-            float LH = 0.0;
-            float HL = 0.0;
-            float HH = 0.0;
-            if (hj < Height)
-            LH = delta[li][hj];
-            if (hi < Width)
-            HL = delta[hi][lj];
-            if (hi < Width && hj < Height)
-            HH = delta[hi][hj];
-            float M1 = LL + (i%4)/(float)4 * (LH-LL);
-            float M2 = HL + (i%4)/(float)4 * (HH-HL);
-            delta[i][j] = M1 + (j%4)/(float)4 * (M2-M1);
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            heightmap[i][j] += delta[i][j];
-        }
-    }
-
-    // Generate 2-scale noise
-    for(int i=0; i < Width; i += 2) {
-        for(int j=0; j < Height; j += 2) {
-            delta[i][j] = ((float)rand()/RAND_MAX - 0.5)/4.0;
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            int li = 2*(i/2);
-            int hi = li+2;
-            int lj = 2*(j/2);
-            int hj = lj+2;
-            float LL = delta[li][lj];
-            float LH = 0.0;
-            float HL = 0.0;
-            float HH = 0.0;
-            if (hj < Height)
-            LH = delta[li][hj];
-            if (hi < Width)
-            HL = delta[hi][lj];
-            if (hi < Width && hj < Height)
-            HH = delta[hi][hj];
-            float M1 = LL + (i%2)/(float)2 * (LH-LL);
-            float M2 = HL + (i%2)/(float)2 * (HH-HL);
-            delta[i][j] = M1 + (j%2)/(float)2 * (M2-M1);
-        }
-    }
-    for(int i=0; i < Width; ++i) {
-        for(int j=0; j < Height; ++j) {
-            heightmap[i][j] += delta[i][j];
-            heightmap[i][j] = heightmap[i][j]*3;
-        }
-    }
-
-    // Initialize tile grid
-    grid = new std::vector<Tile>* ;
-    for(int i=0; i < Width; ++i) {
-        grid[i] = new std::vector<Tile>[Height];
-    }
-
-    //for(int i=0; i < Width; ++i)
-    //  delete delta[i];
-    delete[] delta;
 }
 
-void Map::animate() {
-    updateHeights(.5);
+
+//Dtor
+Map::~Map() {
+    for(int i=0; i < getW(); ++i) {
+        delete elevationmap[i];
+        delete grid[i];
+    }
+    delete[] elevationmap;
+    delete[] grid;
 }
+
+
+
+
+//Interface Methods and helper
+void Map::animate() {}
 
 void Map::render() {
     glPushMatrix();
     //glScalef(1,1,3);
 
-    for (int i=0; i < Width; ++i) {
-        for (int j=0; j < Height; ++j) {
+    for (int i=0; i < getW(); ++i) {
+        for (int j=0; j < getH(); ++j) {
             float corners[4];
-            corners[0] = heightmap[i][j];
+            corners[0] = elevationmap[i][j];
             float n = 1.0;
             if (i > 0 && j > 0) {
-                corners[0] = (corners[0]*n + heightmap[i-1][j-1]) / (n+1.0);
+                corners[0] = (corners[0]*n + elevationmap[i-1][j-1]) / (n+1.0);
                 n += 1.0;
             }
             if (i > 0) {
-                corners[0] = (corners[0]*n + heightmap[i-1][j]) / (n+1.0);
+                corners[0] = (corners[0]*n + elevationmap[i-1][j]) / (n+1.0);
                 n += 1.0;
             }
             if (j > 0) {
-                corners[0] = (corners[0]*n + heightmap[i][j-1]) / (n+1.0);
+                corners[0] = (corners[0]*n + elevationmap[i][j-1]) / (n+1.0);
             }
 
-            corners[1] = heightmap[i][j];
+            corners[1] = elevationmap[i][j];
             n = 1.0;
-            if (i > 0 && j < Height-1) {
-                corners[1] = (corners[1]*n + heightmap[i-1][j+1]) / (n+1.0);
+            if (i > 0 && j < getH()-1) {
+                corners[1] = (corners[1]*n + elevationmap[i-1][j+1]) / (n+1.0);
                 n += 1.0;
             }
             if (i > 0) {
-                corners[1] = (corners[1]*n + heightmap[i-1][j]) / (n+1.0);
+                corners[1] = (corners[1]*n + elevationmap[i-1][j]) / (n+1.0);
                 n += 1.0;
             }
-            if (j < Height-1) {
-                corners[1] = (corners[1]*n + heightmap[i][j+1]) / (n+1.0);
+            if (j < getH()-1) {
+                corners[1] = (corners[1]*n + elevationmap[i][j+1]) / (n+1.0);
             }
 
-            corners[2] = heightmap[i][j];
+            corners[2] = elevationmap[i][j];
             n = 1.0;
-            if (i < Width-1 && j < Height-1) {
-                corners[2] = (corners[2]*n + heightmap[i+1][j+1]) / (n+1.0);
+            if (i < getW()-1 && j < getH()-1) {
+                corners[2] = (corners[2]*n + elevationmap[i+1][j+1]) / (n+1.0);
                 n += 1.0;
             }
-            if (i < Width-1) {
-                corners[2] = (corners[2]*n + heightmap[i+1][j]) / (n+1.0);
+            if (i < getW()-1) {
+                corners[2] = (corners[2]*n + elevationmap[i+1][j]) / (n+1.0);
                 n += 1.0;
             }
-            if (j < Height-1) {
-                corners[2] = (corners[2]*n + heightmap[i][j+1]) / (n+1.0);
+            if (j < getH()-1) {
+                corners[2] = (corners[2]*n + elevationmap[i][j+1]) / (n+1.0);
             }
 
-            corners[3] = heightmap[i][j];
+            corners[3] = elevationmap[i][j];
             n = 1.0;
-            if (i < Width-1 && j > 0) {
-                corners[3] = (corners[3]*n + heightmap[i+1][j-1]) / (n+1.0);
+            if (i < getW()-1 && j > 0) {
+                corners[3] = (corners[3]*n + elevationmap[i+1][j-1]) / (n+1.0);
                 n += 1.0;
             }
-            if (i < Width-1) {
-                corners[3] = (corners[3]*n + heightmap[i+1][j]) / (n+1.0);
+            if (i < getW()-1) {
+                corners[3] = (corners[3]*n + elevationmap[i+1][j]) / (n+1.0);
                 n += 1.0;
             }
             if (j > 0) {
-                corners[3] = (corners[3]*n + heightmap[i][j-1]) / (n+1.0);
+                corners[3] = (corners[3]*n + elevationmap[i][j-1]) / (n+1.0);
             }
 
-            float centerw = -Width/2;
-            float centerh = -Height/2;
+            float centerw = -getW()/2;
+            float centerh = -getH()/2;
             //float centerd = (corners[0]+corners[1]+corners[2]+corners[3])/4;
             float normx = (corners[0]+corners[1]-corners[2]-corners[3])/4;
             float normy = (corners[0]-corners[1]-corners[2]+corners[3])/4;
@@ -303,23 +139,32 @@ float lerp(float x0, float x1, float w) {
     return (1-w)*x0 + w*x1;
 }
 
-float Map::getHeight(float x, float y) {
-    if (x < 0 || y < 0 || x >= Width-1 || y >= Height-1)
+
+
+//Getters
+int Map::getH() { return Height; }
+int Map::getW() { return Width; }
+
+float Map::getElevation(float x, float y) {
+    if (x < 0 || y < 0 || x >= getW()-1 || y >= getH()-1)
     return 0.0;
     int x0 = floor(x);
     int y0 = floor(y);
     int x1 = ceil(x);
     int y1 = ceil(y);
-    float h0 = lerp(heightmap[x0][y0], heightmap[x0][y1], y-y0);
-    float h1 = lerp(heightmap[x1][y0], heightmap[x1][y1], y-y0);
+    float h0 = lerp(elevationmap[x0][y0], elevationmap[x0][y1], y-y0);
+    float h1 = lerp(elevationmap[x1][y0], elevationmap[x1][y1], y-y0);
     return lerp(h0, h1, x-x0);
 }
 
-//int Map::getState(int x, int y) {
-//}
 
-void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighbors){
+//Setters
+void Map::setH(int H) { Height = H; }
+void Map::setW(int W) { Width = W; }
 
+
+//For interacting with ants
+void Map::getNeighbors(float x, float y, float z, float radius, std::vector<Ant*>* neighbors){
     //Check if ant is near any of the sides
     bool top = false, bottom = false, left = false, right = false;
     float leftRight, topBottom;
@@ -339,7 +184,7 @@ void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighb
         leftRight = y;
     }
 
-    float difx, dify, dist;
+    float difx, dify, difz, dist;
 
     for (Ant* ant : ants) {
         if (top && ant->getX() < radius - topBottom) {
@@ -355,8 +200,8 @@ void Map::getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighb
         } else {
             dify = y - ant->getY();
         }
-
-        dist = sqrt(difx*difx + dify*dify);
+        difz = z - ant->getZ();
+        dist = sqrt(difx*difx + dify*dify + difz*difz);
 
         if ( dist <= radius && dist != 0 ) {
             neighbors->push_back(ant);
@@ -368,24 +213,29 @@ void Map::addAnt(Ant* ant) {
     ants.push_back(ant);
 }
 
-int Map::getH() { return Height; }
-int Map::getW() { return Width; }
-
-void Map::setTile(int x, int y, bool lock) {
+void Map::setTile(Ant* ant, float antsize, bool lock) {
+    int x = floor(ant->getX());
+    int y = floor(ant->getY());
 
     if (lock) {
-        Tile T;
-        grid[x][y].push_back(T);
+        ant->lock();
+        for (int i = 0; i < grid[x][y].size(); i++) {
+            Ant* a = grid[x][y][i];
+            a->setZ(a->getZ()+antsize);
+        }
+        ant->setZ(antsize);
+        //ant->setX(x); // Only when both are on we get a seg fault
+        //ant->setY(y);
+        grid[x][y].push_back(ant);
     } else {
-        grid[x][y].pop_back();
-    }
-
-}
-
-void Map::updateHeights(float antsize) {
-    for (int i = 0; i < getW(); i++) {
-        for (int j = 0; j < getH(); j++) {
-            heightmap[i][j] = grid[i][j].size() * antsize;
+        if (!grid[x][y].empty()){
+            grid[x][y].back()->unlock();
+            grid[x][y].pop_back();
+            for (int i = 0; i < grid[x][y].size(); i++) {
+                Ant* a = grid[x][y][i];
+                a->setZ(a->getZ()-antsize);
+            }
         }
     }
+    elevationmap[x][y] = grid[x][y].size() * antsize;
 }

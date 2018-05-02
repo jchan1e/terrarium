@@ -8,10 +8,11 @@ Ant::Ant(float X, float Y, Map* M) {
     setMap(M);
     setX(X);
     setY(Y);
-    setZ(m->getHeight(x,y));
+    setZ(getElevation());
     setSpeed(0.10);
     setDX(-1);
     setDY(-1);
+    setSize(.5);
 
 }
 
@@ -32,8 +33,16 @@ float Ant::getY() { return y; }
 float Ant::getDX() { return dx; }
 float Ant::getDY() { return dy; }
 float Ant::getZ() { return z; }
+float Ant::getSize() { return size; }
 float Ant::getSpeed() { return speed; }
 bool Ant::isLocked() { return locked; }
+float Ant::getElevation() {
+    return m->getElevation(x, y);
+}
+float Ant::getElevation(float X, float Y) {
+    return m->getElevation(X, Y);
+}
+
 
 //Setters
 void Ant::setX(float X) { x = X; }
@@ -42,22 +51,21 @@ void Ant::setDX(float DX) { dx = DX; }
 void Ant::setDY(float DY) { dy = DY; }
 void Ant::setZ(float Z) { z = Z; }
 void Ant::setSpeed(float V) { speed = V; }
-void Ant::lock() {
-    locked = true;
-    m->setTile(floor(getX()), floor(getY()), isLocked());
- }
-void Ant::unlock() {
-    locked = false;
-    m->setTile(floor(getX()), floor(getY()), isLocked());
- }
+void Ant::setSize(float s) { size = s; }
+void Ant::lock() { locked = true; }
+void Ant::unlock() { locked = false; }
 void Ant::setMap(Map* M) { m = M; }
 
+//For when ants lock and need to update the map
+void Ant::setTile(float antsize, bool lock) {
+    m->setTile(this, antsize, lock);
+}
 
 //Interface methods
 void Ant::render() {
     // transform size & location
     glPushMatrix();
-    glTranslated(getX()-m->getH()/2, getY()-m->getW()/2, z+.25);
+    glTranslated(getX()-m->getW()/2, getY()-m->getH()/2, getZ()+.25);
     //glRotated(0, 0, 1, theta);
     glScalef(2.0,2.0,2.0);
 
@@ -75,8 +83,6 @@ void Ant::render() {
 void Ant::animate() {
     // Update the state of this ant by one timestep
     getNeighbors(3);
-    randomStopProb(100);
-    neighborStopProb(1, 10);
     if(!isLocked()){
         if (!neighbors.empty()) {
             computeCohesion(.1);
@@ -86,11 +92,12 @@ void Ant::animate() {
         } else {
             setRandomV();
         }
-
+        move();
+        randomStopProb(10);
+    } else {
+        randomGoProb(10);
+        //neighborGoProb(1,10);
     }
-    randomGoProb(10);
-    // neighborGoProb(1,10);
-    move();
 }
 
 
@@ -100,23 +107,29 @@ void Ant::move() {
     float newy = getY() + getSpeed()*getDY();
 
     if (newx <= 1) {
-        newx = m->getH()-1;
-    } else if (newx >= m->getH() - 1 ) {
+        newx = m->getW()-1;
+    } else if (newx >= m->getW() - 1 ) {
         newx = 1;
     } if (newy <= 1) {
-        newy = m->getW()-1;
-    } else if (newy >= m->getW() - 1 ) {
+        newy = m->getH()-1;
+    } else if (newy >= m->getH() - 1 ) {
         newy = 1;
     }
-    setX(newx);
-    setY(newy);
-    if (!isLocked())
-        setZ(m->getHeight(getX(),getY()));
+
+    float newz = getElevation(newx, newy);
+    if (newz - getZ() < 2*getSize()) {
+        setX(newx);
+        setY(newy);
+        setZ(newz);
+    } else {
+        neighborStopProb(1, 10);
+    }
+
 }
 
 void Ant::getNeighbors(float radius) {
     neighbors.clear();
-    m->getNeighbors(getX(), getY(), radius, &neighbors); //Array of ant pointers
+    m->getNeighbors(getX(), getY(), getZ(), radius, &neighbors); //Array of ant pointers
 }
 
 //Boids stuff
@@ -203,14 +216,14 @@ void Ant::randomStopProb(int prob1){//random stopping of an ant
   int rNum = rand() % prob1;
   if(rNum == 1){
     setStop();
-    lock();//boolean for locking position of ants
+    setTile(getSize(), true);//boolean for locking position of ants
   }
 }
 
 void Ant::randomGoProb(int prob2){//random unlock of ant
   int rNum = rand() % prob2;
   if(rNum == 1){
-    unlock();
+    setTile(getSize(), false);
   }
 }
 
@@ -226,7 +239,7 @@ void Ant::neighborStopProb(float weight, int prob){//stopping of ants based on i
     int var = count*weight;
     if(var >= rNum){
       setStop();
-      lock();
+      setTile(getSize(), true);
     }
 
     }
@@ -243,7 +256,7 @@ void Ant::neighborGoProb(float weight, int prob) { //unlocking of stopped ants b
     int rNum = rand() % prob;
     int var = count*weight;
     if(var>=rNum){
-      unlock();
+      setTile(getSize(), false);
     }
 
   }

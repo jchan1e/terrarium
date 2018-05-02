@@ -14,28 +14,28 @@ public:
 
   int Width;
   int Height;
-  std::vector<Tile>** grid;
+  std::vector<Ant*>** grid;
   std::vector<Ant*> ants;
-  float** heightmap;
+  float** elevationmap;
 
   //Interface methods
   void render();
   void animate();
 
-  Map(int W, int H, int seed);
   Map(int W, int H);
   ~Map();
-
   void generate();
-  void generate(int seed);
+
   int getW();
   int getH();
-  float getHeight(float x, float y);
-  int getState(int x, int y);
-  void getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighbors);
+  void setW(int W);
+  void setH(int H);
+  float getElevation(float x, float y);
+
+  void getNeighbors(float x, float y, float z, float radius, std::vector<Ant*>* neighbors);
   void addAnt(Ant* ant);
-  void setTile(int x, int y, bool lock);
-  void updateHeights(float antsize);
+  void setTile(Ant* ant, float antsize, bool lock);
+
 };
 
 #endif
