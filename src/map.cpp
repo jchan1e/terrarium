@@ -10,6 +10,9 @@ Map::Map(int W, int H, int seed) {
     heightmap = new float*[Width];
     for(int i=0; i < Width; ++i)
     heightmap[i] = new float[Height];
+    grid = new std::vector<Tile>*[Width];
+    for (int i = 0; i < Width; ++i)
+        grid[i] = new std::vector<Tile>[Height];
     generate();
 }
 
@@ -18,7 +21,10 @@ Map::Map(int W, int H) {
     Height = H;
     heightmap = new float*[Width];
     for(int i=0; i < Width; ++i)
-    heightmap[i] = new float[Height];
+        heightmap[i] = new float[Height];
+    grid = new std::vector<Tile>*[Width];
+    for (int i = 0; i < Width; ++i)
+        grid[i] = new std::vector<Tile>[Height];
     generate();
 }
 
@@ -198,11 +204,7 @@ void Map::generate() {
 }
 
 void Map::animate() {
-    for (int i=0; i < Width; ++i) {
-        for (int j=0; j < Height; ++j) {
-            //pass for now
-        }
-    }
+    updateHeights(.5);
 }
 
 void Map::render() {
@@ -301,7 +303,7 @@ float lerp(float x0, float x1, float w) {
 }
 
 float Map::getHeight(float x, float y) {
-    if (x < 0 || y < 0 || x >= Width || y >= Height)
+    if (x < 0 || y < 0 || x >= Width-1 || y >= Height-1)
     return 0.0;
     int x0 = floor(x);
     int y0 = floor(y);
@@ -367,3 +369,22 @@ void Map::addAnt(Ant* ant) {
 
 int Map::getH() { return Height; }
 int Map::getW() { return Width; }
+
+void Map::setTile(int x, int y, bool lock) {
+
+    if (lock) {
+        Tile T;
+        grid[x][y].push_back(T);
+    } else {
+        grid[x][y].pop_back();
+    }
+
+}
+
+void Map::updateHeights(float antsize) {
+    for (int i = 0; i < getW(); i++) {
+        for (int j = 0; j < getH(); j++) {
+            heightmap[i][j] = grid[i][j].size() * antsize;
+        }
+    }
+}

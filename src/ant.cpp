@@ -42,8 +42,14 @@ void Ant::setDX(float DX) { dx = DX; }
 void Ant::setDY(float DY) { dy = DY; }
 void Ant::setZ(float Z) { z = Z; }
 void Ant::setSpeed(float V) { speed = V; }
-void Ant::lock() { locked = true; }
-void Ant::unlock() { locked = false; }
+void Ant::lock() {
+    locked = true;
+    m->setTile(floor(getX()), floor(getY()), isLocked());
+ }
+void Ant::unlock() {
+    locked = false;
+    m->setTile(floor(getX()), floor(getY()), isLocked());
+ }
 void Ant::setMap(Map* M) { m = M; }
 
 
@@ -68,22 +74,22 @@ void Ant::render() {
 
 void Ant::animate() {
     // Update the state of this ant by one timestep
-    getNeighbors(5);
+    getNeighbors(3);
     randomStopProb(100);
     neighborStopProb(1, 10);
     if(!isLocked()){
         if (!neighbors.empty()) {
             computeCohesion(.1);
             computeAlignment(2);
-            computeSeparation(2.5, 1);
+            computeSeparation(1.5, .75);
             setRandomV(.25);
         } else {
             setRandomV();
         }
 
     }
-    randomGoProb(10);
-    neighborGoProb(1,10);
+    // randomGoProb(10);
+    // neighborGoProb(1,10);
     move();
 }
 

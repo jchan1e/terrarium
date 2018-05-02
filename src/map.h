@@ -34,6 +34,8 @@ public:
   int getState(int x, int y);
   void getNeighbors(float x, float y, float radius, std::vector<Ant*>* neighbors);
   void addAnt(Ant* ant);
+  void setTile(int x, int y, bool lock);
+  void updateHeights(float antsize);
 };
 
 #endif
