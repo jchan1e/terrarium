@@ -278,13 +278,14 @@ void Map::render() {
             float normz = 1.0;
             glColor3f(0.5,0.6,0.6);
             glBegin(GL_TRIANGLE_FAN);
-            glNormal3f(normx, normy, normz);
+            glNormal3f(0.0, 0.0, 1.0);
             glVertex3f(i+centerw,     j+centerh,     0.0);
             glVertex3f(i+centerw-0.5, j+centerh-0.5, 0.0);
             glVertex3f(i+centerw+0.5, j+centerh-0.5, 0.0);
             glVertex3f(i+centerw+0.5, j+centerh+0.5, 0.0);
             glVertex3f(i+centerw-0.5, j+centerh+0.5, 0.0);
             glVertex3f(i+centerw-0.5, j+centerh-0.5, 0.0);
+            //glNormal3f(normx, normy, normz);
             //glVertex3f(i+centerw,     j+centerh,     centerd);
             //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
             //glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
