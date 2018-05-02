@@ -220,12 +220,16 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
     if (lock) {
         ant->lock();
         grid[x][y].push_back(ant);
+        elevationmap[x][y] = grid[x][y].size() * antsize;
     } else {
         if (!grid[x][y].empty()){
-            grid[x][y].front()->unlock();
-            grid[x][y].front()->setZ(getElevation(x,y));
+            Ant* target = grid[x][y].front();
+            // grid[x][y].pop_back();
             grid[x][y].erase(grid[x][y].begin());
+            elevationmap[x][y] = grid[x][y].size() * antsize;
+            target->unlock();
+            target->setZ(getElevation(x,y));
+
         }
     }
-    elevationmap[x][y] = grid[x][y].size() * antsize;
 }

@@ -9,7 +9,7 @@ Ant::Ant(float X, float Y, Map* M) {
     setX(X);
     setY(Y);
     setZ(getElevation());
-    setSpeed(0.10);
+    setSpeed(0.01);
     setDX(0);
     setDY(0);
     setSize(.25);
@@ -83,7 +83,7 @@ void Ant::animate() {
         if (!neighbors.empty()) {
             computeCohesion(.1);
             computeAlignment(2);
-            computeSeparation(1.5, .75);
+            computeSeparation(1.5, 1);
             setRandomV(.25);
         } else {
             setRandomV();
@@ -92,7 +92,7 @@ void Ant::animate() {
         randomStopProb(10);
     } else {
         randomGoProb(10);
-        //neighborGoProb(1,10);
+        neighborGoProb(1,10);
     }
 }
 
@@ -101,6 +101,7 @@ void Ant::animate() {
 void Ant::move() {
     float newx = getX() + getSpeed()*getDX();
     float newy = getY() + getSpeed()*getDY();
+    float newz;
 
     if (newx <= 1) {
         newx = m->getW()-1;
@@ -111,9 +112,12 @@ void Ant::move() {
     } else if (newy >= m->getH() - 1 ) {
         newy = 1;
     }
-
-    float newz = getElevation(newx, newy);
-    if (newz - getZ() < 2*getSize()) {
+    if (getZ() > getElevation(getX(), getY())) {
+        newz = getZ() - 4*getSpeed();
+    } else {
+        newz = getElevation(newx, newy);
+    }
+    if (newz - getZ() <= 1*getSize()) {
         setX(newx);
         setY(newy);
         setZ(newz);
@@ -152,11 +156,12 @@ void Ant::computeSeparation(float radius, float weight) {
         float n = neighbors.size();
 
         for (Ant* neighbor : neighbors) {
-            float delx = neighbor->getX() - getX();
-            float dely = neighbor->getY() - getY();
-            if (sqrt(delx*delx + dely*dely) < radius) {
-                mx += delx;
-                my += dely;
+                float delx = neighbor->getX() - getX();
+                float dely = neighbor->getY() - getY();
+                if (sqrt(delx*delx + dely*dely) < radius) {
+                    mx += delx;
+                    my += dely;
+
             }
 
         }
