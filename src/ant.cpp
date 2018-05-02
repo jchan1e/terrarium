@@ -88,7 +88,7 @@ void Ant::animate() {
         }
 
     }
-    // randomGoProb(10);
+    randomGoProb(10);
     // neighborGoProb(1,10);
     move();
 }
@@ -110,7 +110,8 @@ void Ant::move() {
     }
     setX(newx);
     setY(newy);
-    setZ(m->getHeight(getX(),getY()));
+    if (!isLocked())
+        setZ(m->getHeight(getX(),getY()));
 }
 
 void Ant::getNeighbors(float radius) {
