@@ -46,7 +46,6 @@ void Map::animate() {}
 void Map::render() {
     glPushMatrix();
     //glScalef(1,1,3);
-
     for (int i=0; i < getW(); ++i) {
         for (int j=0; j < getH(); ++j) {
             float corners[4];
@@ -112,7 +111,7 @@ void Map::render() {
             float normx = (corners[0]+corners[1]-corners[2]-corners[3])/4;
             float normy = (corners[0]-corners[1]-corners[2]+corners[3])/4;
             float normz = 1.0;
-            glColor3f(0.5,0.6,0.6);
+            glColor3f(0.53, 0.73, 0.64);
             glBegin(GL_TRIANGLE_FAN);
             glNormal3f(0.0, 0.0, 1.0);
             glVertex3f(i+centerw,     j+centerh,     0.0);
@@ -121,17 +120,19 @@ void Map::render() {
             glVertex3f(i+centerw+0.5, j+centerh+0.5, 0.0);
             glVertex3f(i+centerw-0.5, j+centerh+0.5, 0.0);
             glVertex3f(i+centerw-0.5, j+centerh-0.5, 0.0);
-            //glNormal3f(normx, normy, normz);
-            //glVertex3f(i+centerw,     j+centerh,     centerd);
-            //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
-            //glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
-            //glVertex3f(i+centerw+0.5, j+centerh+0.5, corners[2]);
-            //glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);
-            //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
+
+            // //glNormal3f(normx, normy, normz);
+            // //glVertex3f(i+centerw,     j+centerh,     centerd);
+            // //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
+            // //glVertex3f(i+centerw+0.5, j+centerh-0.5, corners[3]);
+            // //glVertex3f(i+centerw+0.5, j+centerh+0.5, corners[2]);
+            // //glVertex3f(i+centerw-0.5, j+centerh+0.5, corners[1]);
+            // //glVertex3f(i+centerw-0.5, j+centerh-0.5, corners[0]);
             glEnd();
             //std::cout << i+centerw << " " << j+centerh << std::endl;
         }
     }
+
     glPopMatrix();
 }
 
@@ -218,23 +219,12 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
 
     if (lock) {
         ant->lock();
-        for (int i = 0; i < grid[x][y].size(); i++) {
-            Ant* a = grid[x][y][i];
-            a->setZ(a->getZ()+antsize);
-        }
-        ant->setZ(antsize);
-        //ant->setX(x); // Only when both are on we get a seg fault
-        //ant->setY(y);
         grid[x][y].push_back(ant);
     } else {
         if (!grid[x][y].empty()){
-            grid[x][y].back()->unlock();
-            grid[x][y].back()->setZ(getElevation(x,y));
-            grid[x][y].pop_back();
-            for (int i = 0; i < grid[x][y].size(); i++) {
-                Ant* a = grid[x][y][i];
-                a->setZ(a->getZ()-antsize);
-            }
+            grid[x][y].front()->unlock();
+            grid[x][y].front()->setZ(getElevation(x,y));
+            grid[x][y].erase(grid[x][y].begin());
         }
     }
     elevationmap[x][y] = grid[x][y].size() * antsize;

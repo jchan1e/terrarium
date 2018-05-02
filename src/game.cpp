@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
   R->addObject(M);
   Ant* A;
 
-  for (int i = 0; i < 500; i++) {
+  for (int i = 0; i < 1000; i++) {
       float r1 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getH()-3))));
       float r2 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getW()-3))));
       A = new Ant(r1, r2, M);

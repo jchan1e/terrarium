@@ -10,9 +10,9 @@ Ant::Ant(float X, float Y, Map* M) {
     setY(Y);
     setZ(getElevation());
     setSpeed(0.10);
-    setDX(-1);
-    setDY(-1);
-    setSize(.5);
+    setDX(0);
+    setDY(0);
+    setSize(.25);
 
 }
 
@@ -65,14 +65,10 @@ void Ant::setTile(float antsize, bool lock) {
 void Ant::render() {
     // transform size & location
     glPushMatrix();
-    glTranslated(getX()-m->getW()/2, getY()-m->getH()/2, getZ()+.25);
+    glTranslated(getX()-m->getW()/2, getY()-m->getH()/2, getZ()+getSize());
     //glRotated(0, 0, 1, theta);
     glScalef(2.0,2.0,2.0);
-
-    if(isLocked())
-      glColor3f(0.5,0.5,0.5);
-    else
-      glColor3f(0.4,0.7,0.7);
+    glColor3f(0.4, 0.2, 0.22);
     octahedron(0,0,0, 0, 0.25);
 
     //glTranslatef(cos(theta), sin(theta), 0);
