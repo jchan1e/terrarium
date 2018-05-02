@@ -19,7 +19,7 @@ public:
     Map* m;
     bool locked;
     std::vector <Ant*> neighbors;
-
+    float size;
     //Con/Destructor
     Ant(float X, float Y, Map* M);
     ~Ant();
@@ -33,8 +33,11 @@ public:
     float getDX();
     float getDY();
     float getZ();
+    float getSize();
     float getSpeed();
     bool isLocked();
+    float getElevation();
+    float getElevation(float X, float Y);
 
     //Setters
     void setX(float X);
@@ -45,6 +48,8 @@ public:
     void setRandomV(float noise);
     void setZ(float Z);
     void setSpeed(float V);
+    void setSize(float s);
+    void setTile(float antsize, bool lock);
     void lock();
     void unlock();
     void setMap(Map* M);
