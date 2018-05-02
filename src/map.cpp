@@ -229,6 +229,7 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
     } else {
         if (!grid[x][y].empty()){
             grid[x][y].back()->unlock();
+            grid[x][y].back()->setZ(getElevation(x,y));
             grid[x][y].pop_back();
             for (int i = 0; i < grid[x][y].size(); i++) {
                 Ant* a = grid[x][y][i];
