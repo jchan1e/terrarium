@@ -13,9 +13,21 @@ Ant::Ant(float X, float Y, Map* M) {
     setDX(0);
     setDY(0);
     setSize(.25);
+    setDead(false);
 
 }
-
+//Constructor for dead ants
+Ant::Ant(float X, float Y, Map* M, bool D) {
+    setMap(M);
+    setX(X);
+    setY(Y);
+    setSpeed(0.05);
+    setDead(D);
+    setDX(0);
+    setDY(0);
+    setSize(.25);
+    setTile(getSize(), true);
+}
 //Destructor
 Ant::~Ant() {
 }
@@ -55,6 +67,7 @@ void Ant::setSize(float s) { size = s; }
 void Ant::lock() { locked = true; }
 void Ant::unlock() { locked = false; }
 void Ant::setMap(Map* M) { m = M; }
+void Ant::setDead(bool D) {dead = D;}
 
 //For when ants lock and need to update the map
 void Ant::setTile(float antsize, bool lock) {
@@ -68,7 +81,11 @@ void Ant::render() {
     glTranslated(getX()-m->getW()/2, getY()-m->getH()/2, getZ()+getSize());
     //glRotated(0, 0, 1, theta);
     glScalef(2.0,2.0,2.0);
-    glColor3f(0.4, 0.2, 0.22);
+    if (dead) {
+        glColor3f(0.96, 0.94, 0.93);
+    } else {
+        glColor3f(0.4, 0.2, 0.22);
+    }
     octahedron(0,0,0, 0, 0.25);
 
     //glTranslatef(cos(theta), sin(theta), 0);
@@ -77,22 +94,24 @@ void Ant::render() {
 }
 
 void Ant::animate() {
-    // Update the state of this ant by one timestep
-    getNeighbors(3);
-    if(!isLocked()){
-        if (!neighbors.empty()) {
-            computeCohesion(.1);
-            computeAlignment(2);
-            computeSeparation(1.5, 1);
-            setRandomV(.25);
+    if (!dead) {
+        // Update the state of this ant by one timestep
+        getNeighbors(5);
+        if(!isLocked()){
+            if (!neighbors.empty()) {
+                // computeCohesion(.05);
+                // computeAlignment(2);
+                // computeSeparation(2.5, 1);
+                setRandomV(.25);
+            } else {
+                setRandomV();
+            }
+            move();
+            //randomStopProb(10);
         } else {
-            setRandomV();
+            randomGoProb(10);
+            neighborGoProb(1,10);
         }
-        move();
-        randomStopProb(10);
-    } else {
-        randomGoProb(10);
-        neighborGoProb(1,10);
     }
 }
 
@@ -117,12 +136,12 @@ void Ant::move() {
     } else {
         newz = getElevation(newx, newy);
     }
-    if (newz - getZ() <= 2*getSize()) {
+    if (newz - getZ() <= 1.5*getSize()) {
         setX(newx);
         setY(newy);
         setZ(newz);
     } else {
-        neighborStopProb(.1, 10);
+        neighborStopProb(1, 10);
     }
 
 }

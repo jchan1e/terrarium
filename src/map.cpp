@@ -219,7 +219,8 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
 
     if (lock) {
         ant->lock();
-        grid[x][y].push_back(ant);
+        //grid[x][y].push_back(ant);
+        grid[x][y].insert(grid[x][y].begin(), ant);
         elevationmap[x][y] = grid[x][y].size() * antsize;
     } else {
         if (!grid[x][y].empty()){

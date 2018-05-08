@@ -14,6 +14,7 @@ public:
 
     //Members
     float x, y, z;
+    bool dead;
     float dx, dy;
     float speed;
     Map* m;
@@ -22,6 +23,7 @@ public:
     float size;
     //Con/Destructor
     Ant(float X, float Y, Map* M);
+    Ant(float X, float Y, Map* M, bool D);
     ~Ant();
 
     //Helper function for direction
@@ -53,6 +55,7 @@ public:
     void lock();
     void unlock();
     void setMap(Map* M);
+    void setDead(bool D);
 
     //Interface methods
     void render();
