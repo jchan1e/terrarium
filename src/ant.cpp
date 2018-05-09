@@ -9,10 +9,10 @@ Ant::Ant(float X, float Y, Map* M) {
     setX(X);
     setY(Y);
     setZ(getElevation());
-    setSpeed(0.05);
+    setSpeed(0.025);
     setDX(0);
     setDY(0);
-    setSize(.25);
+    setSize(.35);
     setDead(false);
 
 }
@@ -25,8 +25,8 @@ Ant::Ant(float X, float Y, Map* M, bool D) {
     setDead(D);
     setDX(0);
     setDY(0);
-    setSize(.25);
-    setTile(getSize(), true);
+    setSize(.35);
+    //setTile(getSize(), true);
 }
 //Destructor
 Ant::~Ant() {
@@ -100,8 +100,8 @@ void Ant::animate() {
         if(!isLocked()){
             if (!neighbors.empty()) {
                 // computeCohesion(.05);
-                // computeAlignment(2);
-                // computeSeparation(2.5, 1);
+                // computeAlignment(1);
+                // computeSeparation(2.5, .2);
                 setRandomV(.25);
             } else {
                 setRandomV();
@@ -110,7 +110,7 @@ void Ant::animate() {
             //randomStopProb(10);
         } else {
             randomGoProb(10);
-            neighborGoProb(1,10);
+            //neighborGoProb(1,10);
         }
     }
 }
@@ -136,7 +136,7 @@ void Ant::move() {
     } else {
         newz = getElevation(newx, newy);
     }
-    if (newz - getZ() <= 1.5*getSize()) {
+    if (newz - getZ() <= 2.5*getSize()) {
         setX(newx);
         setY(newy);
         setZ(newz);

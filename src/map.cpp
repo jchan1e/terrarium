@@ -23,6 +23,10 @@ void Map::generate() {
             elevationmap[i][j] = 0.0;
         }
     }
+    elevationmap[getW()/2][getH()/2] = 50;
+    elevationmap[getW()/2+1][getH()/2] = 50;
+    elevationmap[getW()/2][getH()/2+1] = 50;
+    elevationmap[getW()/2+1][getH()/2+1] = 50;
     return;
 }
 
@@ -150,11 +154,12 @@ float Map::getElevation(float x, float y) {
     if (x < 0 || y < 0 || x >= getW()-2 || y >= getH()-2) return 0.0;
     int x0 = floor(x);
     int y0 = floor(y);
-    int x1 = ceil(x);
-    int y1 = ceil(y);
-    float h0 = lerp(elevationmap[x0][y0], elevationmap[x0][y1], y-y0);
-    float h1 = lerp(elevationmap[x1][y0], elevationmap[x1][y1], y-y0);
-    return lerp(h0, h1, x-x0);
+    return elevationmap[x0][y0];
+    // int x1 = ceil(x);
+    // int y1 = ceil(y);
+    // float h0 = lerp(elevationmap[x0][y0], elevationmap[x0][y1], y-y0);
+    // float h1 = lerp(elevationmap[x1][y0], elevationmap[x1][y1], y-y0);
+    // return lerp(h0, h1, x-x0);
 }
 
 
@@ -233,4 +238,8 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
 
         }
     }
+    elevationmap[getW()/2][getH()/2] = 50;
+    elevationmap[getW()/2+1][getH()/2] = 50;
+    elevationmap[getW()/2][getH()/2+1] = 50;
+    elevationmap[getW()/2+1][getH()/2+1] = 50;
 }

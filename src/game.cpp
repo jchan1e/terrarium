@@ -47,25 +47,7 @@ int main(int argc, char *argv[])
   R->addObject(M);
   Ant* A;
 
-  for (int i = 0; i < 50; i++) {
-      A = new Ant(M->getW()/2, M->getH()/2, M, true);
-      R->addObject(A);
-      M->addAnt(A);
-      A = new Ant(M->getW()/2+1, M->getH()/2+1, M, true);
-      R->addObject(A);
-      M->addAnt(A);
-      A = new Ant(M->getW()/2+1, M->getH()/2, M, true);
-      R->addObject(A);
-      M->addAnt(A);
-      A = new Ant(M->getW()/2, M->getH()/2+1, M, true);
-      R->addObject(A);
-      M->addAnt(A);
-  }
-
-  R->physics();
-  R->display();
-
-  for (int i = 0; i < 750; i++) {
+  for (int i = 0; i < 3000; i++) {
       float r1 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getH()-3))));
       float r2 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getW()-3))));
       A = new Ant(r1, r2, M);
