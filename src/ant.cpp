@@ -96,12 +96,12 @@ void Ant::render() {
 void Ant::animate() {
     if (!dead) {
         // Update the state of this ant by one timestep
-        getNeighbors(5);
+        getNeighbors(3);
         if(!isLocked()){
             if (!neighbors.empty()) {
-                // computeCohesion(.05);
-                // computeAlignment(1);
-                // computeSeparation(2.5, .2);
+                computeCohesion(1);
+                computeAlignment(1);
+                computeSeparation(1.5, 1);
                 setRandomV(.25);
             } else {
                 setRandomV();
@@ -109,7 +109,7 @@ void Ant::animate() {
             move();
             //randomStopProb(10);
         } else {
-            randomGoProb(10);
+            randomGoProb(1000);
             //neighborGoProb(1,10);
         }
     }
@@ -136,7 +136,7 @@ void Ant::move() {
     } else {
         newz = getElevation(newx, newy);
     }
-    if (newz - getZ() <= 2.5*getSize()) {
+    if (newz - getZ() <= 1*getSize()) {
         setX(newx);
         setY(newy);
         setZ(newz);
