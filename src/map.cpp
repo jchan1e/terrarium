@@ -238,8 +238,8 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
 
         }
     }
-    elevationmap[getW()/2][getH()/2] = 50;
-    elevationmap[getW()/2+1][getH()/2] = 50;
-    elevationmap[getW()/2][getH()/2+1] = 50;
-    elevationmap[getW()/2+1][getH()/2+1] = 50;
+    // elevationmap[getW()/2][getH()/2] = 50;
+    // elevationmap[getW()/2+1][getH()/2] = 50;
+    // elevationmap[getW()/2][getH()/2+1] = 50;
+    // elevationmap[getW()/2+1][getH()/2+1] = 50;
 }

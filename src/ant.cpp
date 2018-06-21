@@ -101,13 +101,13 @@ void Ant::animate() {
             if (!neighbors.empty()) {
                 computeCohesion(1);
                 computeAlignment(1);
-                computeSeparation(1.5, 1);
+                computeSeparation(1.5, 3);
                 setRandomV(.25);
             } else {
                 setRandomV();
             }
             move();
-            //randomStopProb(10);
+            randomStopProb(1000);
         } else {
             randomGoProb(1000);
             //neighborGoProb(1,10);
