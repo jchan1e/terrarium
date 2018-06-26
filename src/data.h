@@ -1,17 +1,19 @@
 #ifndef DATA_H
 #define DATA_H
 
-#include <nholmann/json.hpp>
-#include <cmath>
+//#include <cmath>
 #include <fstream>
 
-class Data {
-    Data();
-    ~Data();
+class TimeSeries {
+    std::vector<float> rows;
+    int numberOfAnts;
+    int width;
 
-    json readJson(string filename);
-    void writeJson(string filename);
-
-    
-
+    TimeSeries(int numAnts, int W);
+    ~TimeSeries();
+    //void nextLine(float* points);
+    void nextCoordinate(float* point); //[3]
+    void writeAll(string filename);
 }
+
+#endif
