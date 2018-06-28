@@ -12,7 +12,7 @@ class TimeSeries {
     TimeSeries(int numAnts, int W);
     ~TimeSeries();
     //void nextLine(float* points);
-    void nextCoordinate(float* point); //[3]
+    void nextCoordinate(float* point);
     void writeAll(string filename);
 }
 

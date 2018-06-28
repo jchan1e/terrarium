@@ -5,7 +5,7 @@ using namespace std;
 TimeSeries::TimeSeries(int numAnts, int W) {
     numberOfAnts = numAnts;
     width = W;
-
+    rows.append(numberOfAnts);
 }
 
 TimeSeries::~TimeSeries();
@@ -14,8 +14,14 @@ TimeSeries::~TimeSeries();
 //
 // }
 
-void TimeSeries::nextCoordinate(float* point){
-    rows.insert(rows.end(), point);
+void TimeSeries::nextCoordinate(float x, float y, float z){
+    rows.push_back(x);
+    rows.push_back(y);
+    rows.push_back(z);
 }
 
-void TimeSeries::writeAll(string filename);
+void TimeSeries::writeAll(string filename) {
+    for (float s : rows) {
+        cout<<s<<" "<<endl;
+    }
+}

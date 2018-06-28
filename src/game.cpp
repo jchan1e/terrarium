@@ -46,11 +46,13 @@ int main(int argc, char *argv[])
   M = new Map(48,48);
   R->addObject(M);
   Ant* A;
+  TimeSeries* TS;
+  TS = new TimeSeries(1000, 48);
 
   for (int i = 0; i < 1000; i++) {
       float r1 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getH()-3))));
       float r2 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getW()-3))));
-      A = new Ant(r1, r2, M);
+      A = new Ant(r1, r2, M, TS);
       R->addObject(A);
       M->addAnt(A);
   }
@@ -94,7 +96,7 @@ int main(int argc, char *argv[])
   delete R;
   //delete M;
   //delete A;
-
+  TS->writeAll(" ");
   SDL_Quit();
 
   return 0;

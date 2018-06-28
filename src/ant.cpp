@@ -4,8 +4,9 @@
 using namespace std;
 
 //Constructor
-Ant::Ant(float X, float Y, Map* M) {
+Ant::Ant(float X, float Y, Map* M TimeSeries* TS) {
     setMap(M);
+    setTS(TS);
     setX(X);
     setY(Y);
     setZ(getElevation());
@@ -67,6 +68,7 @@ void Ant::setSize(float s) { size = s; }
 void Ant::lock() { locked = true; }
 void Ant::unlock() { locked = false; }
 void Ant::setMap(Map* M) { m = M; }
+void Ant::setTS(TimeSeries* TS) { ts = TS; }
 void Ant::setDead(bool D) {dead = D;}
 
 //For when ants lock and need to update the map
@@ -113,6 +115,7 @@ void Ant::animate() {
             //neighborGoProb(1,10);
         }
     }
+    reportCoord();
 }
 
 
@@ -144,6 +147,10 @@ void Ant::move() {
         neighborStopProb(1, 10);
     }
 
+}
+
+void Ant::reportCoord() {
+    ts->nextCoordinate(getX(), getY(), getZ());
 }
 
 void Ant::getNeighbors(float radius) {

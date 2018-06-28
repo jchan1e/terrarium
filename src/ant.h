@@ -2,6 +2,7 @@
 #define ANT_H
 
 #include "map.h"
+#include "data.h"
 #include "net.h"
 #include "genome.h"
 #include "objects.h"
@@ -21,6 +22,7 @@ public:
     bool locked;
     std::vector <Ant*> neighbors;
     float size;
+    TimeSeries* ts;
     //Con/Destructor
     Ant(float X, float Y, Map* M);
     Ant(float X, float Y, Map* M, bool D);
@@ -55,6 +57,7 @@ public:
     void lock();
     void unlock();
     void setMap(Map* M);
+    void setTS(TimeSeries* TS);
     void setDead(bool D);
 
     //Interface methods
@@ -63,7 +66,7 @@ public:
 
     //Animate methods
     void move();
-
+    void reportCoord();
     void getNeighbors(float radius);
 
 
