@@ -14,6 +14,7 @@ Ant::Ant(float X, float Y, Map* M) {
     setDY(0);
     setSize(.35);
     setDead(false);
+    setFound(false);
 
 }
 //Constructor for dead ants
@@ -68,6 +69,7 @@ void Ant::lock() { locked = true; }
 void Ant::unlock() { locked = false; }
 void Ant::setMap(Map* M) { m = M; }
 void Ant::setDead(bool D) {dead = D;}
+void Ant::setFound(bool F) {found = F;}
 
 //For when ants lock and need to update the map
 void Ant::setTile(float antsize, bool lock) {
@@ -99,7 +101,7 @@ void Ant::animate() {
         getNeighbors(3);
         if(!isLocked()){
             if (!neighbors.empty()) {
-                computeCohesion(1);
+                computeCohesion(0.01);
                 computeAlignment(1);
                 computeSeparation(1.5, 1);
                 setRandomV(.25);
@@ -113,6 +115,7 @@ void Ant::animate() {
             //neighborGoProb(1,10);
         }
     }
+    
 }
 
 
@@ -132,11 +135,11 @@ void Ant::move() {
         newy = 1;
     }
     if (getZ() > getElevation(getX(), getY())) {
-        newz = getZ() - 4*getSpeed();
+        newz = getZ() - 1*getSpeed();
     } else {
         newz = getElevation(newx, newy);
     }
-    if (newz - getZ() <= 1*getSize()) {
+    if (newz - getZ() <= 3*getSize()) {
         setX(newx);
         setY(newy);
         setZ(newz);

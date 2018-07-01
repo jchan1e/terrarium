@@ -12,10 +12,13 @@ Map::Map(int W, int H) {
     for(int i=0; i < getW(); ++i)
         elevationmap[i] = new float[getH()];
     grid = new std::vector<Ant*>*[getW()];
+
     for (int i = 0; i < getW(); ++i)
         grid[i] = new std::vector<Ant*>[getH()];
+
     generate();
 }
+
 
 void Map::generate() {
     for (int i=0; i < getW(); ++i) {
@@ -45,7 +48,13 @@ Map::~Map() {
 
 
 //Interface Methods and helper
-void Map::animate() {}
+void Map::animate() {
+    //getmaxHeight();
+    setFound();
+    countTowers();
+    std::cout<<towers->size();
+
+}
 
 void Map::render() {
     glPushMatrix();
@@ -214,6 +223,55 @@ void Map::getNeighbors(float x, float y, float z, float radius, std::vector<Ant*
     }
 }
 
+void Map::getAdjacent(Ant * testAnt, float radius, std::vector<Ant*>* adjacent){
+    //Check if ant is near any of the sides
+    float x = testAnt->getX();
+    float y = testAnt->getY();
+    bool top = false, bottom = false, left = false, right = false;
+    float leftRight, topBottom;
+    float h = getH();
+    float w = getW();
+    if (h - x < radius) {
+        top = true;
+        topBottom = h - x;
+    } else if ( x < radius) {
+        bottom = true;
+        topBottom = x;
+    } if ( w - y < radius) {
+        left = true;
+        leftRight = w - y;
+    } else if ( y < radius ) {
+        right = true;
+        leftRight = y;
+    }
+
+    float difx, dify, dist;
+
+    for (Ant* ant : ants) {
+        if (top && ant->getX() < radius - topBottom) {
+            difx = topBottom + ant->getX();
+        } else if (bottom && h - ant->getX() < radius - topBottom) {
+            difx = topBottom + h - ant->getX();
+        } else {
+            difx = x - ant->getX();
+        } if (left && ant->getY() < radius - leftRight) {
+            dify = leftRight + ant->getY();
+        } else if (right && w - ant->getY() < radius - leftRight) {
+            dify = leftRight + w - ant->getY();
+        } else {
+            dify = y - ant->getY();
+        }
+        
+        dist = sqrt(difx*difx + dify*dify);
+
+        if ( dist <= radius && dist != 0 ) {
+            if(!ant->found){
+                adjacent->push_back(ant);
+            }
+        }
+    }
+}
+
 void Map::addAnt(Ant* ant) {
     ants.push_back(ant);
 }
@@ -243,3 +301,66 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
     elevationmap[getW()/2][getH()/2+1] = 50;
     elevationmap[getW()/2+1][getH()/2+1] = 50;
 }
+void Map::setmaxHeightX(float X){
+    maxX = X;
+}
+void Map::setmaxHeightY(float Y){
+    maxY = Y;
+}
+
+std::vector<Ant*>* Map::getmaxHeight(){
+    float maxH = 0;
+    std::vector<Ant*> *maxAntTower; //Vector of tallest ant tower of single width
+    for(int i = 0; i < getW(); i++){
+        for(int j = 0; j < getH(); j++){
+            if(grid[i][j].size() > maxH && !grid[i][j].back()->found){
+                maxH = grid[i][j].size();
+                setmaxHeightX(i);
+                setmaxHeightY(j);
+                maxAntTower = &grid[i][j];
+            }
+        }
+    }
+    
+    //std::cout<<maxH;
+    return maxAntTower;
+}
+
+void Map::defineTower(std::vector<Ant*>* antTower){
+    while(!antTower->empty()){
+        for(Ant* ant : *antTower){
+            getAdjacent(ant, 1, ant->adjacent);
+            ithTower->push_back(ant);
+            ant->found = true;
+            defineTower(ant->adjacent);
+        }
+    }
+}
+// void defineTower(std::vector<Ant*>* antTower, std::vector<Ant*>* ithTower){
+//     while(!antTower->empty()){
+//         for(int i = 0; i< antTower->size(); i++){
+//             getAdjacent((*antTower)[i], 1, antTower->at(i)->adjacent);
+//             ithTower->push_back((*antTower)[i]);
+//             antTower->at(i)->found = true;
+//             defineTower(antTower->at(i)->adjacent);
+//         }
+//     }
+// }
+
+void Map::countTowers(){
+    std::vector<Ant*>* maxAntTower = getmaxHeight();
+    if(!(maxAntTower->back()->found)){
+        defineTower(maxAntTower);
+        towers->push_back(ithTower);
+        ithTower->clear();
+        countTowers();
+
+    }
+}
+
+void Map::setFound(){
+    for(Ant* ant : ants){
+        ant->found = false;
+    }
+}
+

@@ -15,11 +15,13 @@ public:
     //Members
     float x, y, z;
     bool dead;
+    bool found;
     float dx, dy;
     float speed;
     Map* m;
     bool locked;
     std::vector <Ant*> neighbors;
+    std::vector <Ant*>* adjacent;
     float size;
     //Con/Destructor
     Ant(float X, float Y, Map* M);
@@ -56,6 +58,7 @@ public:
     void unlock();
     void setMap(Map* M);
     void setDead(bool D);
+    void setFound(bool F);
 
     //Interface methods
     void render();
