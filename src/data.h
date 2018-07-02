@@ -1,7 +1,6 @@
 #ifndef DATA_H
 #define DATA_H
 
-//#include <cmath>
 #include <fstream>
 #include <string>
 
