@@ -4,6 +4,7 @@
 //#include <cmath>
 #include <fstream>
 #include <string>
+#include <vector>
 
 class TimeSeries {
 private:

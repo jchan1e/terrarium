@@ -5,10 +5,10 @@ using namespace std;
 TimeSeries::TimeSeries(int numAnts, int W) {
     numberOfAnts = numAnts;
     width = W;
-    rows.append(numberOfAnts);
+    rows.push_back(numberOfAnts);
 }
 
-TimeSeries::~TimeSeries();
+TimeSeries::~TimeSeries(){}
 
 // void TimeSeries::nextLine(float* points){
 //
@@ -21,7 +21,12 @@ void TimeSeries::nextCoordinate(float x, float y, float z){
 }
 
 void TimeSeries::writeAll(string filename) {
-    for (float s : rows) {
-        cout<<s<<" "<<endl;
-    }
+    ofstream outfile(filename, ofstream::binary);
+    outfile.write((char*)&numberOfAnts, sizeof(int));
+    outfile.write((char*)&width, sizeof(int));
+    outfile.write((char*)rows.data(), rows.size()*sizeof(float));
+    outfile.close();
+    //for (float s : rows) {
+    //    cout<<s<<" "<<endl;
+    //}
 }
