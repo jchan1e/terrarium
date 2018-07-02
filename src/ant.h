@@ -7,6 +7,7 @@
 #include "genome.h"
 #include "objects.h"
 #include "renderable.h"
+#include "data.h"
 #include <cmath>
 
 class Ant : public Renderable
@@ -24,7 +25,7 @@ public:
     float size;
     TimeSeries* ts;
     //Con/Destructor
-    Ant(float X, float Y, Map* M);
+    Ant(float X, float Y, Map* M, TimeSeries* TS);
     Ant(float X, float Y, Map* M, bool D);
     ~Ant();
 

@@ -14,8 +14,8 @@ public:
     TimeSeries(int numAnts, int W);
     ~TimeSeries();
     //void nextLine(float* points);
-    void nextCoordinate(float* point);
-    void writeAll(string filename);
-}
+    void nextCoordinate(float x, float y, float z);
+    void writeAll(std::string filename);
+};
 
 #endif

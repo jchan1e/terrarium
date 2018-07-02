@@ -4,7 +4,7 @@
 using namespace std;
 
 //Constructor
-Ant::Ant(float X, float Y, Map* M TimeSeries* TS) {
+Ant::Ant(float X, float Y, Map* M, TimeSeries* TS) {
     setMap(M);
     setTS(TS);
     setX(X);
