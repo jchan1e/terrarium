@@ -27,7 +27,7 @@ all:run test
 test.o:test.cpp map.h net.h genome.h ant.h
 	g++ -c $(CFLG) $<
 
-game.o:game.cpp renderer.h map.h net.h genome.h ant.h stdGL.h
+game.o:game.cpp renderer.h map.h net.h genome.h ant.h data.h stdGL.h
 	g++ -c $(CFLG) $(SFLG) $<
 
 renderer.o:renderer.cpp renderer.h renderable.h shader.h stdGL.h
@@ -57,9 +57,12 @@ tile.o:tile.cpp tile.h
 text.o:text.cpp text.h stdGL.h
 	g++ -c $(CFLG) $<
 
+data.o:data.cpp data.h
+	g++ -o $(CFLG) $<
+
 
 #  link
-run:game.o renderer.o shader.o map.o ant.o net.o objects.o tile.o
+run:game.o renderer.o shader.o map.o ant.o net.o objects.o tile.o data.o
 	g++ -g -o run $^ $(GLIBS)
 	#g++ -g -O3 -o run $^ $(GLIBS) -lSDL2_ttf
 
