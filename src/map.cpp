@@ -266,7 +266,9 @@ void Map::getAdjacent(Ant * testAnt, float radius, std::vector<Ant*>* adjacent){
 
         if ( dist <= radius && dist != 0 ) {
             if(!ant->found){
+                ant->found = true;
                 adjacent->push_back(ant);
+
             }
         }
     }
