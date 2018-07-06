@@ -17,6 +17,8 @@ public:
   std::vector<Ant*>** grid;
   std::vector<Ant*> ants;
   float** elevationmap;
+  int** topoMap;
+  bool** foundMap;
 
   //Interface methods
   void render();
@@ -31,7 +33,11 @@ public:
   void setW(int W);
   void setH(int H);
   float getElevation(float x, float y);
-
+  void updateTopo();
+  void resetFound();
+  int* findTallest();
+  void updateFound(int* val);
+  void bfsTowers(int *maxTower);
   void getNeighbors(float x, float y, float z, float radius, std::vector<Ant*>* neighbors);
   void addAnt(Ant* ant);
   void setTile(Ant* ant, float antsize, bool lock);
