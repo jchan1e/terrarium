@@ -27,6 +27,7 @@ public:
   float** elevationmap;
   int** topoMap;
   bool** foundMap;
+  std::vector<point*> towerVec;
 
   //Interface methods
   void render();

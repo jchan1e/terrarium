@@ -289,11 +289,13 @@ void Map::updateFound(point* val){
     foundMap[val->x][val->y] = true;
 }
 
-void Map::bfsTowers(point* maxTower, std::queue<point*> towerFound){
+void Map::bfsTowers(point* maxTower, std::queue<point*> towerFound){//bfs implementation for searching topoMap
     towerFound.push(maxTower);
     updateFound(maxTower);
     while(!towerFound.empty()){
         towerFound.pop();
+        towerVec.push_back(maxTower); //add to growing vector of single ant towers
+
         bool top = false, bottom = false, left = false, right = false;
         int h = getH();
         int w = getW();
