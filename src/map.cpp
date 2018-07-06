@@ -15,11 +15,12 @@ Map::Map(int W, int H) {
 
     grid = new std::vector<Ant*>*[getW()];
     topoMap = new int*[getW()];
-    foundMap = new int*[getW()];
-    for (int i = 0; i < getW(); ++i)
+    foundMap = new bool*[getW()];
+    for (int i = 0; i < getW(); ++i){
         grid[i] = new std::vector<Ant*>[getH()];
         topoMap[i] = new int[getH()];
-        foundMap[i] = new int[getH()];
+        foundMap[i] = new bool[getH()];
+    }
     generate();
 }
 
@@ -269,73 +270,71 @@ void Map::resetFound(){
     }
 }
 
-int* Map::findTallest(){
-    int* max;
-    max = new int[2];
+point* Map::findTallest(){
+    point* max = new point;
+    int maxH = 0;
     for(int i = 0; i < getW(); ++i){
         for(int j = 0; j < getH(); ++j){
-            if(topoMap[i][j]>max && !foundMap[i][j]){
-                max[0] = i;
-                max[1] = j;
+            if(topoMap[i][j]>maxH && !foundMap[i][j]){
+                max->x = i;
+                max->y = j;
+                maxH = topoMap[i][j];
             }
         }
     }
     return max;
 }
 
-void Map::updateFound(int* val){
-    foundMap[val[0]][val[1]] = true;
+void Map::updateFound(point* val){
+    foundMap[val->x][val->y] = true;
 }
 
-void Map::bfsTowers(int *maxTower){
-    std::vector<int[2]> towerFound;
-    towerFound.push_back(maxTower);
+void Map::bfsTowers(point* maxTower, std::queue<point*> towerFound){
+    towerFound.push(maxTower);
     updateFound(maxTower);
     while(!towerFound.empty()){
-
-        int* temp = towerFound.pop();
+        towerFound.pop();
         bool top = false, bottom = false, left = false, right = false;
         int h = getH();
         int w = getW();
-        int* t1, t2, t3, t4;
-        t1 = new int[2];
-        t2 = new int[2]; 
-        t3 = new int[2];
-        t4 = new int[2];
-        if (maxTower[1] >= h-1) {
+        point* t1 = new point;
+        point* t2 = new point; 
+        point* t3 = new point;
+        point* t4 = new point;
+        if (maxTower->y >= h-1) {
             top = true;
-        } else if ( maxTower[1] <= 0) {
+        } else if ( maxTower->y <= 0) {
             bottom = true;
-        } if ( maxTower[0] <= 0) {
+        } if ( maxTower->x <= 0) {
             left = true;
-        } else if ( maxTower[0] >= w-1) {
+        } else if ( maxTower->x >= w-1) {
             right = true;
         }
-        t1[0] = maxTower[0];
-        t1[1] = maxTower[1] += 1;
-        t2[0] = maxTower[0] += 1;
-        t2[1] = maxTower[1];
-        t3[0] = maxTower[0];
-        t3[1] = maxTower[1] -= 1;
-        t4[0] = maxTower[0] -= 1;
-        t4[1] = maxTower[1];
+        t1->x = maxTower->x;
+        t1->y = maxTower->y += 1;
+        t2->x = maxTower->x += 1;
+        t2->y = maxTower->y;
+        t3->x = maxTower->x;
+        t3->y = maxTower->y -= 1;
+        t4->x = maxTower->x -= 1;
+        t4->y = maxTower->y;
         if(top){
-            t1[1] = 0;
+            t1->y = 0;
         }else if(bottom){
-            t3[1] = h-1;
+            t3->y = h-1;
         }
         if(left){
-            t4[0] = w-1;
+            t4->x = w-1;
         }else if(right){ //not sure if we want if and elseif staments
-            t2[0] = 0;
+            t2->x = 0;
         }
-        if(!foundMap[t1[0]][t1[1]]) //do you think there is a better way to do this other than 4 ifs
-            bfsTowers(t1);
-        if(!foundMap[t2[0]][t2[1]])
-            bfsTowers(t2);
-        if(!foundMap[t3[0]][t3[1]])
-            bfsTowers(t3);
-        if(!foundMap[t4[0]][t4[1]])
-            bfsTowers(t4);
+        if(!foundMap[t1->x][t1->y] && topoMap[t1->x][t1->y]>0) //do you think there is a better way to do this other than 4 ifs
+            bfsTowers(t1, towerFound);
+        if(!foundMap[t2->x][t2->y] && topoMap[t2->x][t2->y]>0)
+            bfsTowers(t2, towerFound);
+        if(!foundMap[t3->x][t3->y] && topoMap[t3->x][t3->y]>0)
+            bfsTowers(t3, towerFound);
+        if(!foundMap[t4->x][t4->y] && topoMap[t4->x][t4->y]>0)
+            bfsTowers(t4, towerFound);
     }
 }

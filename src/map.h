@@ -6,8 +6,16 @@
 #include "renderable.h"
 #include <cstdlib>
 #include <vector>
+#include <queue>
 
 class Ant;
+
+struct point
+{
+  int x;
+  int y;
+  
+};
 
 class Map : public Renderable {
 public:
@@ -35,9 +43,9 @@ public:
   float getElevation(float x, float y);
   void updateTopo();
   void resetFound();
-  int* findTallest();
-  void updateFound(int* val);
-  void bfsTowers(int *maxTower);
+  point* findTallest();
+  void updateFound(point* val);
+  void bfsTowers(point* maxTower, std::queue<point*> towerFound);
   void getNeighbors(float x, float y, float z, float radius, std::vector<Ant*>* neighbors);
   void addAnt(Ant* ant);
   void setTile(Ant* ant, float antsize, bool lock);
