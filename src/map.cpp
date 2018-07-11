@@ -289,7 +289,9 @@ void Map::updateFound(point* val){
     foundMap[val->x][val->y] = true;
 }
 
-void Map::bfsTowers(point* maxTower, std::queue<point*> towerFound){//bfs implementation for searching topoMap
+bool Map::bfsTowers(point* maxTower){//bfs implementation for searching topoMap
+    std::queue<point*> towerFound;
+    bool returnVal = false;
     towerFound.push(maxTower);
     updateFound(maxTower);
     while(!towerFound.empty()){
@@ -330,13 +332,49 @@ void Map::bfsTowers(point* maxTower, std::queue<point*> towerFound){//bfs implem
         }else if(right){ //not sure if we want if and elseif staments
             t2->x = 0;
         }
-        if(!foundMap[t1->x][t1->y] && topoMap[t1->x][t1->y]>0) //do you think there is a better way to do this other than 4 ifs
-            bfsTowers(t1, towerFound);
-        if(!foundMap[t2->x][t2->y] && topoMap[t2->x][t2->y]>0)
-            bfsTowers(t2, towerFound);
-        if(!foundMap[t3->x][t3->y] && topoMap[t3->x][t3->y]>0)
-            bfsTowers(t3, towerFound);
-        if(!foundMap[t4->x][t4->y] && topoMap[t4->x][t4->y]>0)
-            bfsTowers(t4, towerFound);
+        if(!foundMap[t1->x][t1->y] && topoMap[t1->x][t1->y]>0){
+            towerFound.push(t1);
+            updateFound(t1);
+        } //do you think there is a better way to do this other than 4 ifs
+        if(!foundMap[t2->x][t2->y] && topoMap[t2->x][t2->y]>0){
+            towerFound.push(t2);
+            updateFound(t2);
+        }
+        if(!foundMap[t3->x][t3->y] && topoMap[t3->x][t3->y]>0){
+            towerFound.push(t3);
+            updateFound(t3);
+        }
+        if(!foundMap[t4->x][t4->y] && topoMap[t4->x][t4->y]>0){
+            towerFound.push(t4);
+            updateFound(t4);
+        }
+
     }
+    returnVal = true;
+    return returnVal;
+
+}
+
+towerCOM* Map::coputeCOM( std::vector<point*> towerVec){
+    float xSum = 0;
+    float ySum = 0;
+    float zSum = 0;
+    int size = 0;
+    int antTotal = 0;
+    for(point* points : towerVec){
+        size = topoMap[points->x][points->y];
+        xSum += size*points->x;
+        ySum += size*points->y;
+        for(int i = 0; i < size; i++){
+            zSum += i+1;
+        }
+        antTotal += size;
+        
+    } 
+    towerCOM * ithTower = new towerCOM;
+    ithTower->x = xSum/antTotal;
+    ithTower->y = ySum/antTotal;
+    ithTower->z = zSum/antTotal;
+
+    return ithTower;
 }
