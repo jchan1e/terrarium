@@ -8,7 +8,7 @@ TimeSeries::TimeSeries(int numAnts, int W) {
     rows.push_back(numberOfAnts);
 }
 
-TimeSeries::~TimeSeries(){}
+//TimeSeries::~TimeSeries(){}
 
 // void TimeSeries::nextLine(float* points){
 //
