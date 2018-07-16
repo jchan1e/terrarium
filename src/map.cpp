@@ -55,6 +55,9 @@ Map::~Map() {
 void Map::animate() {
     updateTopo();
     resetFound();
+    findAllTowers();
+    std::cout<<COMvec.size()<<std::endl;
+    clearVectors();
 }
 
 void Map::render() {
@@ -289,9 +292,8 @@ void Map::updateFound(point* val){
     foundMap[val->x][val->y] = true;
 }
 
-bool Map::bfsTowers(point* maxTower){//bfs implementation for searching topoMap
+void Map::bfsTowers(point* maxTower){//bfs implementation for searching topoMap
     std::queue<point*> towerFound;
-    bool returnVal = false;
     towerFound.push(maxTower);
     updateFound(maxTower);
     while(!towerFound.empty()){
@@ -350,12 +352,10 @@ bool Map::bfsTowers(point* maxTower){//bfs implementation for searching topoMap
         }
 
     }
-    returnVal = true;
-    return returnVal;
 
 }
 
-towerCOM* Map::coputeCOM( std::vector<point*> towerVec){
+towerCOM* Map::coputeCOM(std::vector<point*> towerVec){
     float xSum = 0;
     float ySum = 0;
     float zSum = 0;
@@ -377,4 +377,25 @@ towerCOM* Map::coputeCOM( std::vector<point*> towerVec){
     ithTower->z = zSum/antTotal;
 
     return ithTower;
+}
+
+void Map::findAllTowers(){
+    point * temp = findTallest();
+    int size = topoMap[temp->x][temp->y];
+    while(size > 1){
+        bfsTowers(temp);
+        COMvec.push_back(coputeCOM(towerVec));
+        tower* ithTower = new tower;
+        ithTower->tVec = towerVec;
+        towerVec.clear(); 
+        allTowers.push_back(ithTower);
+        temp = findTallest();
+        size = topoMap[temp->x][temp->y];
+    }
+}
+
+void Map::clearVectors(){
+    towerVec.clear();
+    COMvec.clear();
+    allTowers.clear();
 }

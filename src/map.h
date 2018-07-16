@@ -24,6 +24,13 @@ struct towerCOM
   float z;
 };
 
+struct tower
+{
+  std::vector<point*> tVec;
+  std::vector<Ant*> aVec;
+
+};
+
 class Map : public Renderable {
 public:
 
@@ -35,6 +42,8 @@ public:
   int** topoMap;
   bool** foundMap;
   std::vector<point*> towerVec;
+  std::vector<towerCOM*> COMvec;
+  std::vector<tower*> allTowers;
 
   //Interface methods
   void render();
@@ -53,12 +62,15 @@ public:
   void resetFound();
   point* findTallest();
   void updateFound(point* val);
-  bool bfsTowers(point* maxTower);
+  void bfsTowers(point* maxTower);
   void getNeighbors(float x, float y, float z, float radius, std::vector<Ant*>* neighbors);
   void addAnt(Ant* ant);
   void setTile(Ant* ant, float antsize, bool lock);
 
   towerCOM* coputeCOM( std::vector<point*> towerVec);
+  void findAllTowers();
+  void clearVectors();
+
 
 
 };
