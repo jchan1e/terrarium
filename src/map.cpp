@@ -45,7 +45,9 @@ Map::~Map() {
 
 
 //Interface Methods and helper
-void Map::animate() {}
+void Map::animate() {
+    findClusters();
+}
 
 void Map::render() {
     glPushMatrix();
@@ -243,3 +245,104 @@ void Map::setTile(Ant* ant, float antsize, bool lock) {
     elevationmap[getW()/2][getH()/2+1] = 50;
     elevationmap[getW()/2+1][getH()/2+1] = 50;
 }
+
+
+void Map::findClusters(){
+    for(Ant* ant : ants){
+        ant->getNeighbors(1);
+    }
+    for(Ant* ant : ants){
+        if(!ant->neighbors.empty()){//ant has neighbors
+            if(allClusters.empty()){//case where there are not yet any Clusters
+                Cluster* firstCluster = newCluster(ant);
+                allClusters.push_back(firstCluster);
+            }
+            else{//there are clusters
+                int size = allClusters.size();
+                n = size;
+                int *counter = new int[size];
+                bool *bCounter = new bool[size];
+                int i = 0;
+                for(Ant* neighbor : ant->neighbors){
+                    for(Cluster* clust : allClusters){
+
+                        if(std::find((clust->clusAnt).begin(), (clust->clusAnt).end(), neighbor) != (clust->clusAnt).end()){
+                            counter[i]++;
+                        }
+                        i++;
+                    }
+
+                }
+                int count = 0;
+                bool noCluster = false;
+                bool oneCluster = false;
+                bool multiCluster = false;
+                int k;
+                for(int j = 0; j < allClusters.size(); j++){//iterate through our array to see where the neighbors are
+                    //count += counter[i];
+                    if(counter[j] == (ant->neighbors).size()){//all neighbors are in one cluster,
+                        oneCluster = true;
+                        k = j;
+                    }
+                    else if(counter[j] != 0){//not all ants are in one cluster
+                        bCounter[j] = true;
+                        multiCluster = true;
+                    }
+                    else{//none of neighbors are in any cluster
+                        noCluster = true;
+                    }
+                }
+                if(oneCluster){
+                    allClusters[k]->clusAnt.push_back(ant);
+
+                }else if(noCluster){
+                    Cluster* ithCluster = newCluster(ant);
+                    allClusters.push_back(ithCluster);
+
+                }else if(multiCluster){
+                    Cluster* merged = mergeCluster(bCounter, size);
+                    allClusters.push_back(merged);
+
+                }
+            
+                delete[] counter;
+                delete[] bCounter;
+            }
+        }
+
+    }
+    std::cout<<n;
+}
+
+Cluster* Map::newCluster(Ant* ant){
+    Cluster* aClus = new Cluster;
+    for(Ant* neighbor : ant->neighbors){
+        aClus->clusAnt.push_back(neighbor);
+    }
+    aClus->clusAnt.push_back(ant);
+    return aClus;
+
+}
+
+Cluster* Map::mergeCluster(bool *arr, int n){
+    Cluster* clus = new Cluster;
+    Cluster* temp;
+    Ant* temp2;
+    for(int i = 0; i < n; i++){
+        if(arr[i] == true){//ant has neighbors in the ith cluster
+            temp = allClusters[i];
+            while(!temp->clusAnt.empty()){
+                temp2 = temp->clusAnt.back();
+                temp->clusAnt.pop_back();
+                clus->clusAnt.push_back(temp2);
+            }
+             allClusters.erase(allClusters.begin() + i);
+            delete temp;
+        }
+    }
+
+    return clus;
+}
+
+
+
