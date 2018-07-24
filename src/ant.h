@@ -21,6 +21,7 @@ public:
     bool locked;
     std::vector <Ant*> neighbors;
     float size;
+    bool found;
     //Con/Destructor
     Ant(float X, float Y, Map* M);
     Ant(float X, float Y, Map* M, bool D);
@@ -56,6 +57,7 @@ public:
     void unlock();
     void setMap(Map* M);
     void setDead(bool D);
+    void setFound(bool F);
 
     //Interface methods
     void render();

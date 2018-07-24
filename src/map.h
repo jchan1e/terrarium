@@ -44,6 +44,7 @@ public:
   void addAnt(Ant* ant);
   void setTile(Ant* ant, float antsize, bool lock);
 
+  void resetAntFound();
   void findClusters();
   Cluster* newCluster(Ant* ant);
   Cluster* mergeCluster(bool *arr, int n);

@@ -14,6 +14,7 @@ Ant::Ant(float X, float Y, Map* M) {
     setDY(0);
     setSize(.35);
     setDead(false);
+    setFound(false);
 
 }
 //Constructor for dead ants
@@ -26,6 +27,7 @@ Ant::Ant(float X, float Y, Map* M, bool D) {
     setDX(0);
     setDY(0);
     setSize(.35);
+    setFound(false);
     //setTile(getSize(), true);
 }
 //Destructor
@@ -68,6 +70,7 @@ void Ant::lock() { locked = true; }
 void Ant::unlock() { locked = false; }
 void Ant::setMap(Map* M) { m = M; }
 void Ant::setDead(bool D) {dead = D;}
+void Ant::setFound(bool F){found = F;}
 
 //For when ants lock and need to update the map
 void Ant::setTile(float antsize, bool lock) {

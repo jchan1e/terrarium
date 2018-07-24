@@ -47,6 +47,7 @@ Map::~Map() {
 //Interface Methods and helper
 void Map::animate() {
     findClusters();
+    resetAntFound();
 }
 
 void Map::render() {
@@ -262,8 +263,9 @@ void Map::findClusters(){
                 n = size;
                 int *counter = new int[size];
                 bool *bCounter = new bool[size];
-                int i = 0;
+                
                 for(Ant* neighbor : ant->neighbors){
+                    int i = 0;
                     for(Cluster* clust : allClusters){
 
                         if(std::find((clust->clusAnt).begin(), (clust->clusAnt).end(), neighbor) != (clust->clusAnt).end()){
@@ -271,8 +273,12 @@ void Map::findClusters(){
                         }
                         i++;
                     }
-
                 }
+                for(Cluster* clust : allClusters){
+                        if(std::find((clust->clusAnt).begin(), (clust->clusAnt).end(), ant) != (clust->clusAnt).end()){
+                            ant->setFound(true);
+                        }
+                    }
                 int count = 0;
                 bool noCluster = false;
                 bool oneCluster = false;
@@ -293,15 +299,32 @@ void Map::findClusters(){
                     }
                 }
                 if(oneCluster){
-                    allClusters[k]->clusAnt.push_back(ant);
+                    if(!ant->found){
+                        allClusters[k]->clusAnt.push_back(ant);
+                        ant->setFound(true);
+                    }
 
                 }else if(noCluster){
-                    Cluster* ithCluster = newCluster(ant);
-                    allClusters.push_back(ithCluster);
+                    if(!ant->found){
+                        Cluster* ithCluster = newCluster(ant);
+                        allClusters.push_back(ithCluster);
+                        ant->setFound(true);
+
+                    }
 
                 }else if(multiCluster){
-                    Cluster* merged = mergeCluster(bCounter, size);
-                    allClusters.push_back(merged);
+                    if(!ant->found){
+                        Cluster* merged = mergeCluster(bCounter, size);
+                        merged->clusAnt.push_back(ant);
+                        allClusters.push_back(merged);
+                        ant->setFound(true);
+
+
+                    }
+                    else{
+                        Cluster* merged = mergeCluster(bCounter, size);
+                        allClusters.push_back(merged);
+                    }
 
                 }
             
@@ -311,7 +334,6 @@ void Map::findClusters(){
         }
 
     }
-    std::cout<<n;
 }
 
 Cluster* Map::newCluster(Ant* ant){
@@ -344,5 +366,10 @@ Cluster* Map::mergeCluster(bool *arr, int n){
     return clus;
 }
 
+void Map::resetAntFound(){
+    for(Ant* ant : ants){
+        ant->setFound(false);
+    }
+}
 
 
