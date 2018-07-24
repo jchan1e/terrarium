@@ -11,6 +11,9 @@ class Ant;
 
 struct Cluster
 {
+  float x;
+  float y;
+  float z;
   std::vector<Ant*> clusAnt;  
 };
 
@@ -48,6 +51,7 @@ public:
   void findClusters();
   Cluster* newCluster(Ant* ant);
   Cluster* mergeCluster(bool *arr, int n);
+  void updateCenterofMass();
 
 };
 

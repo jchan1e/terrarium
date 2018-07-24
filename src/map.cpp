@@ -47,7 +47,10 @@ Map::~Map() {
 //Interface Methods and helper
 void Map::animate() {
     findClusters();
+    updateCenterofMass();
+    std::cout<<allClusters.size();
     resetAntFound();
+
 }
 
 void Map::render() {
@@ -300,26 +303,23 @@ void Map::findClusters(){
                 }
                 if(oneCluster){
                     if(!ant->found){
-                        allClusters[k]->clusAnt.push_back(ant);
+                        allClusters[k]->clusAnt.push_back(ant);//put our current ant in the cluster with its neighbors
                         ant->setFound(true);
                     }
 
                 }else if(noCluster){
                     if(!ant->found){
-                        Cluster* ithCluster = newCluster(ant);
+                        Cluster* ithCluster = newCluster(ant);//create a new cluster and put ant and neighbors in it
                         allClusters.push_back(ithCluster);
                         ant->setFound(true);
-
                     }
 
                 }else if(multiCluster){
                     if(!ant->found){
-                        Cluster* merged = mergeCluster(bCounter, size);
-                        merged->clusAnt.push_back(ant);
+                        Cluster* merged = mergeCluster(bCounter, size);//maybe should be two cases some of the neighbors are in one cluster but not necessarily all have been put in a cluster yet
+                        merged->clusAnt.push_back(ant);//however this might take care of this albeit in a slow manner
                         allClusters.push_back(merged);
                         ant->setFound(true);
-
-
                     }
                     else{
                         Cluster* merged = mergeCluster(bCounter, size);
@@ -371,5 +371,24 @@ void Map::resetAntFound(){
         ant->setFound(false);
     }
 }
+
+void Map::updateCenterofMass(){
+    for(Cluster* cluster : allClusters){
+        float xSum = 0;
+        float ySum = 0;
+        float zSum = 0;
+        for(Ant* ant : cluster->clusAnt){
+            xSum += ant->getX();
+            ySum += ant->getY();
+            zSum += ant->getZ();
+        }
+        int n = cluster->clusAnt.size();
+        cluster->x = xSum/n;
+        cluster->y = ySum/n;
+        cluster->z = zSum/n;
+    }
+}
+
+
 
 
