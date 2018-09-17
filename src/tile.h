@@ -6,6 +6,8 @@ class Tile {
 public:
   Tile();
   ~Tile();
+
+  #just a test
 };
 
 #endif
