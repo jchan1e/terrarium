@@ -30,6 +30,19 @@ bool init()
 
 int main(int argc, char *argv[])
 {
+  if(argc < 2)
+  {
+    cerr << "Requires at least 1 argument\nExiting..\n";
+    return 1;
+  }
+
+  ifstream F(argv[1]);
+  if (!F.is_open())
+  {
+    cerr << "couldn't open file " << argv[1] << endl;
+    return 2;
+  }
+
   //Initialize
   if (init() != true)
   {
@@ -47,14 +60,58 @@ int main(int argc, char *argv[])
   R->addObject(M);
   Ant* A;
 
-  for (int i = 0; i < 1000; i++) {
-      float r1 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getH()-3))));
-      float r2 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getW()-3))));
-      A = new Ant(r1, r2, M);
-      R->addObject(A);
-      M->addAnt(A);
+  string S;
+  int i = 1;
+  string s1, s2, s3;
+  float r1, r2, r3;
+  while (getline(F,S, ','))
+  {
+    if (S[0] == '\n')
+      S.erase(0,1);
+    //string s1 = S.substr(0, S.find(delimiter));
+    //string s2 = S.substr(1, S.find(delimiter));
+    //string s3 = S.substr(2, S.find(delimiter));
+    //float r1 = stof(s1);
+    //float r2 = stof(s2);
+    //float r3 = stof(s3);
+    if (S.length() > 0)
+    {
+      switch (i)
+      {
+      case 1:
+        s1 = S;
+        r1 = stof(s1);
+        i = 2;
+        S = "";
+        break;
+      case 2:
+        s2 = S;
+        r2 = stof(s2);
+        i = 3;
+        S = "";
+        break;
+      case 3:
+        s3 = S;
+        r3 = stof(s3);
+        i = 1;
+        S = "";
+        cout << s1 << ", " << s2 << ", " << s3 << endl;
+        //cout << r1 << ", " << r2 << ", " << r3 << endl;
+        A = new Ant(r1/2 + M->getW()/2, r2/2 + M->getH()/2, r3, M);
+        R->addObject(A);
+        M->addAnt(A);
+        break;
+      }
+    }
   }
 
+  //for (int i = 0; i < 1000; i++) {
+  //    float r1 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getH()-3))));
+  //    float r2 = 1 + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX/((M->getW()-3))));
+  //    A = new Ant(r1, r2, M);
+  //    R->addObject(A);
+  //    M->addAnt(A);
+  //}
 
   //Timing
   int r = 0;

@@ -27,6 +27,7 @@ public:
     //Con/Destructor
     Ant(float X, float Y, Map* M, TimeSeries* TS);
     Ant(float X, float Y, Map* M, bool D);
+    Ant(float X, float Y, float Z, Map* M);
     ~Ant();
 
     //Helper function for direction

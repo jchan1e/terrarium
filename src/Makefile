@@ -19,7 +19,7 @@ endif
 CFLG=-g -O3 -Wall -std=c++11
 #CFLG=-g -Wall -std=c++11
 
-compile:run sim
+compile:run sim vis
 
 all:run test
 
@@ -34,7 +34,7 @@ sim.o:sim.cpp map.h ant.h data.h
 	g++ -c $(CFLG) $<
 
 vis.o:vis.cpp renderer.h map.h ant.h data.h stdGL.h
-	g++ -c $(CFLG) $<
+	g++ -c $(CFLG) $(SFLG) $<
 
 renderer.o:renderer.cpp renderer.h renderable.h shader.h stdGL.h
 	g++ -c $(CFLG) $(SFLG) $<

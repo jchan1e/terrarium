@@ -7,7 +7,7 @@ public:
   Tile();
   ~Tile();
 
-  #just a test
+  //#just a test
 };
 
 #endif

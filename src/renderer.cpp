@@ -20,7 +20,7 @@ Renderer::Renderer(){ //, SDL_GLContext* c) {
   if (!success)
     exit(-1);
 //  std::cout << glGetString(GL_VERSION) << std::endl;
-  pixlight = CreateShaderProg((char*)"pixlight.vert", (char*)"pixlight.frag");
+  pixlight = CreateShaderProg((char*)"src/pixlight.vert", (char*)"src/pixlight.frag");
   //int depth_size = 0;
   //SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depth_size);
   //cout << depth_size << endl;
@@ -97,10 +97,11 @@ void Renderer::display() {
   glEnable(GL_LIGHTING);
   //glShadeModel(GL_FLAT);
   float white[4]   = {1.0,1.0,1.0,1.0};
-  float pos[4]     = {0.0, 0.0, 8.0, 1.0};
-  float ambient[4] = {0.12, 0.15, 0.16, 1.0};
-  float diffuse[4] = {0.65, 0.65, 0.60, 1.0};
-  float specular[4]= {0.7, 0.7, 0.9, 1.0};
+  float pos[4]     = {-20.0, 20.0, 16.0, 1.0};
+  float ambient[4] = {0.20, 0.24, 0.25, 1.0};
+  float diffuse[4] = {0.85, 0.85, 0.80, 1.0};
+  //float specular[4]= {0.8, 0.8, 0.9, 1.0};
+  float specular[4]= {0.0, 0.0, 0.0, 1.0};
   float shininess  = 64;
 
   //glLightModeli(GL_LIGHT_MODEL_LOCAL_VIEWER, 1);

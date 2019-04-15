@@ -29,6 +29,20 @@ Ant::Ant(float X, float Y, Map* M, bool D) {
     setSize(.35);
     //setTile(getSize(), true);
 }
+
+Ant::Ant(float X, float Y, float Z, Map* M) {
+    setMap(M);
+    setX(X);
+    setY(Y);
+    setZ(Z);
+    setDead(false);
+    setSpeed(0.05);
+    setDX(0);
+    setDY(0);
+    setSize(.35);
+    //setTile(getSize(), true);
+}
+
 //Destructor
 Ant::~Ant() {
 }
@@ -86,7 +100,7 @@ void Ant::render() {
     if (dead) {
         glColor3f(0.96, 0.94, 0.93);
     } else {
-        glColor3f(0.4, 0.2, 0.22);
+        glColor3f(0.5, 0.3, 0.22);
     }
     octahedron(0,0,0, 0, 0.25);
 

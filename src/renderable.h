@@ -6,6 +6,7 @@ class Renderable {
 public:
   virtual void animate() = 0;
   virtual void render() = 0;
+  //virtual ~Renderable() = 0;
 };
 
 #endif
