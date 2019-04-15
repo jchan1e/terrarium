@@ -1,23 +1,4 @@
 ## Terrarium
 
-this project runs an evolution simulator that
-- environment
-  - generated from a pixel image
-  - contains food, varying in color
-  - contains natural hazards
-  - changes over time
-- creatures
-  - have body color for species identification
-  - have food color preference
-  - controlled by neural networks
-  - size (more energy stored, required)
-  - has sensors
-    - color vision
-      - can distinguish between the ground and other creatures
-  - can take actions
-    - eat (+++energy)
-      - creatures are either carnivorous or herbivorous
-    - move (-energy)
-    - attack (--energy, drops meat if creature dies)
-    - reproduce (---energy)
-  
+This project runs a simulation in which ants follow each other around and have a chance of locking in place.  
+Observe the dynamics of their interactions and the way that towers of ants form in this behavior model.
