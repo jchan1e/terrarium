@@ -20,7 +20,7 @@ Renderer::Renderer(){ //, SDL_GLContext* c) {
   if (!success)
     exit(-1);
 //  std::cout << glGetString(GL_VERSION) << std::endl;
-  pixlight = CreateShaderProg((char*)"pixlight.vert", (char*)"pixlight.frag");
+  pixlight = CreateShaderProg((char*)"src/pixlight.vert", (char*)"src/pixlight.frag");
   //int depth_size = 0;
   //SDL_GL_GetAttribute(SDL_GL_DEPTH_SIZE, &depth_size);
   //cout << depth_size << endl;
